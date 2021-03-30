@@ -1,19 +1,20 @@
 package edu.ithaca.dragon.bank;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TravelLog {
     
     private String title;
     private String description;
-    private ArrayList<Location> places;
+    private List<Location> places;
 
     public TravelLog(String title, String description){
         if (title.length() > 0){
             if (description.length() > 0){
                 this.title = title;
                 this.description = description;
-                places = new ArrayList<Location>();
+                places = new ArrayList<>();
             }
             else throw new IllegalArgumentException("The description for this travel log has been left empty.");
         }
@@ -26,6 +27,14 @@ public class TravelLog {
 
     public String getDescription(){
         return description;
+    }
+
+    public List<Location> getPlaces(){
+        return places;
+    }
+
+    public void addDestination(Location name){
+        //TODO
     }
 
 }
