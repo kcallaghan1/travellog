@@ -12,7 +12,7 @@ public class TravelLogTest {
 
         assertEquals("Ithaca", travelLog.getTitle());
         assertEquals("All the best locations in downtown Ithaca!", travelLog.getDescription());
-        //check for exception throw correctly
+        //check for exception thrown correctly
         assertThrows(IllegalArgumentException.class, () -> new TravelLog("", "description here"));
         assertThrows(IllegalArgumentException.class, () -> new TravelLog("Ithaca", ""));
         assertThrows(IllegalArgumentException.class, () -> new TravelLog("", ""));
