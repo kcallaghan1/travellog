@@ -20,6 +20,7 @@ public class TravelLogTest {
         assertThrows(IllegalArgumentException.class, () -> new TravelLog("", ""));
     }
 
+    @Test
     void addDestinationTest(){
         TravelLog travelLog = new TravelLog("Ithaca", "All the best locations in downtown Ithaca!");
         Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");

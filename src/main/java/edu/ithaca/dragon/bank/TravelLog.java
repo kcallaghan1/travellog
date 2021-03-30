@@ -34,7 +34,7 @@ public class TravelLog {
     }
 
     public void addDestination(Location name){
-        //TODO
+        places.add(name);
     }
 
 }
