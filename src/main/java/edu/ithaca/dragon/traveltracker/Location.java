@@ -1,6 +1,7 @@
 package edu.ithaca.dragon.traveltracker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Location {
 
@@ -26,5 +27,9 @@ public class Location {
 
     public String getAddress(){
         return address;
+    }
+
+    public List<Categories> getCategories(){
+        return categories;
     }
 }
