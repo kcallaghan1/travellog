@@ -36,8 +36,12 @@ public class TravelLogTest {
         //Base case
         assertEquals(compare, travelLog.getPlaces());
         //Adding multiple locations
+        compare.add(location2);
+        compare.add(location3);
+        assertNotEquals(compare, travelLog.getPlaces());
         travelLog.addDestination(location2);
         travelLog.addDestination(location3);
+        assertEquals(compare, travelLog.getPlaces());
         //adding the same location
         assertThrows(IllegalArgumentException.class, () -> travelLog.addDestination(location1));
     }
