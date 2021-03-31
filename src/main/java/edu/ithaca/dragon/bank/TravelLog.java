@@ -34,7 +34,16 @@ public class TravelLog {
     }
 
     public void addDestination(Location name) throws IllegalArgumentException{
-        places.add(name);
+        boolean sameLocation = false;
+        for (int i = 0; i < places.size(); i++){
+            if (places.get(i) == name){
+                sameLocation = true;
+            }
+        }
+        if (sameLocation)
+            throw new IllegalArgumentException("This location is already in the travel log.");
+        else
+            places.add(name);
     }
 
 }
