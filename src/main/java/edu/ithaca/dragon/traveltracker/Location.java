@@ -6,7 +6,7 @@ public class Location {
 
     private String name;
     private String address;
-    private ArrayList<String> categories;
+    private ArrayList<Categories> categories;
 
     public Location(String name, String address){
         if (name.length() > 0){
