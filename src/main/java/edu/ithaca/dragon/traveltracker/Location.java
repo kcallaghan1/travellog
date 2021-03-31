@@ -1,12 +1,13 @@
 package edu.ithaca.dragon.traveltracker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Location {
 
     private String name;
     private String address;
-    private ArrayList<String> categories;
+    private ArrayList<Categories> categories;
 
     public Location(String name, String address){
         if (name.length() > 0){
@@ -26,5 +27,9 @@ public class Location {
 
     public String getAddress(){
         return address;
+    }
+
+    public List<Categories> getCategories(){
+        return categories;
     }
 }
