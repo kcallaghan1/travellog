@@ -24,6 +24,8 @@ public class TravelLogTest {
     void addDestinationTest(){
         TravelLog travelLog = new TravelLog("Ithaca", "All the best locations in downtown Ithaca!");
         Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
 
         List<Location> compare = new ArrayList<>();
         compare.add(location1);
@@ -33,7 +35,10 @@ public class TravelLogTest {
         travelLog.addDestination(location1);
         //Base case
         assertEquals(compare, travelLog.getPlaces());
+        //Adding multiple locations
+        travelLog.addDestination(location2);
+        travelLog.addDestination(location3);
+        //adding the same location
+        assertThrows(IllegalArgumentException.class, () -> travelLog.addDestination(location1));
     }
-
-    
 }

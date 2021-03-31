@@ -33,7 +33,7 @@ public class TravelLog {
         return places;
     }
 
-    public void addDestination(Location name){
+    public void addDestination(Location name) throws IllegalArgumentException{
         places.add(name);
     }
 
