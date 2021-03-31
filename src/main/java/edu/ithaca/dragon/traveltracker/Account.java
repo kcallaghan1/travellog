@@ -1,4 +1,4 @@
-package edu.ithaca.dragon.bank;
+package edu.ithaca.dragon.traveltracker;
 
 public class Account{
 

@@ -1,4 +1,4 @@
-package edu.ithaca.dragon.bank;
+package edu.ithaca.dragon.traveltracker;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +21,8 @@ class AccountTest {
 
     @Test
     void isEmailValidTest(){
-        assertTrue(BankAccount.isEmailValid( "a@b.com"));
-        assertFalse( BankAccount.isEmailValid(""));
+        assertTrue(Account.isEmailValid( "a@b.com"));
+        assertFalse( Account.isEmailValid(""));
     }
 
 
