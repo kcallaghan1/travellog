@@ -44,6 +44,23 @@ public class SearchTest {
     }
 
     @Test
+    void searchCategoriesTest(){
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        ArrayList<Location> locations = new ArrayList<Location>();
+        ArrayList<Location> filtered_locations = new ArrayList<Location>();
+
+        locations.add(location1);
+        locations.add(location2);
+        locations.add(location3);
+
+        System.out.println("Need Library To Filter Categories");
+    }
+
+
+    @Test
     void isInputValidTest(){
         assertTrue(isInputValid("StarBucks"));  //Mixing cases
         assertTrue(isInputValid("starbucks"));  //Lower case

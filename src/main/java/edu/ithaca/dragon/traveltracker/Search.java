@@ -38,4 +38,17 @@ public class Search {
 
         return filtered_locations;
     }
+
+    public static ArrayList<Location> searchCategories(String userInput, ArrayList<Location> locations){
+        ArrayList<Location> filtered_locations = new ArrayList<Location>();
+
+        for(int i=0;i<locations.size();i++){
+            for(int k = 0;k<locations.get(i).getCategories().size();k++){
+                if(locations.get(i).getCategories().get(k).toString().toLowerCase().equals(userInput) && !filtered_locations.contains(locations.get(i)))
+                    filtered_locations.add(locations.get(i));
+            }
+        }
+
+        return filtered_locations;
+    }
 }
