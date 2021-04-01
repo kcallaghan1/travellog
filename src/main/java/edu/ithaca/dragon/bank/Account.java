@@ -9,11 +9,16 @@ public class Account{
     ArrayList<Location> fav;
 
     public Account(String username, String email, String password){
-        this.username=username;
-        this.email = email;
-        this.password = password;
-        tLogs = new ArrayList<TravelLog>();
-        fav = new ArrayList<Location>();
+        if(isEmailValid(email) || username.length()<6){
+            this.username=username;
+            this.email = email;
+            this.password = password;
+            tLogs = new ArrayList<TravelLog>();
+            fav = new ArrayList<Location>();
+        }
+        else{
+            throw new IllegalArgumentException("Invalid email or username");
+        }
     }
 
     public static boolean isEmailValid(String email){
@@ -55,27 +60,45 @@ public class Account{
     }
 
     TravelLog getLogWith(String name){
+        for(int i = 0; i<tLogs.length; i++){
+            if(tLogs[i].getName ==  name){
+                return tLogs[i];
+            }
+        }
         return null;
+    }
+
+    TravelLog getLogAt(int i){
+        return tLogs.get(i);
     }
 
     TravelLog removeLogAt(int i){
-        return null;
+        return tLogs.remove(i);
     }
 
     Location getFavAt(int i){
-        return null;
+        return fav.get(i);
     }
 
     Location removeFavAt(int i){
-        return null;
+        return fav.remove(i);
     }
 
     Boolean verifyAccount(String usernameIn, String passIn){
+        if(usernameIn==username && passIn == password){
+            return true;
+        }
         return false;
     }
 
-    void resetPassword(String p1In, String p2In, String passIn){
-
+    boolean resetPassword(String p1In, String p2In, String passIn){
+        if(p1In == p2In && passIn == password){
+            password = p1In;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public String getUsername() {
