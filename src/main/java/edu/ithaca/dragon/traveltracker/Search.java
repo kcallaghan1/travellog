@@ -27,25 +27,15 @@ public class Search {
      */
 
 
-    public static boolean search(String userInput, ArrayList<Location> locations){
-        for(int i=0;i<locations.size();i++){
-            if((userInput.toLowerCase()).equals(locations.get(i).getName().toLowerCase())){
-                return true;
-            }
-        }return false;
-    }
-/*
-    public static ArrayList<Location> Search(String userInput, ArrayList<Location> locations){
-        ArrayList<Location> filtered_locations = new ArrayList<Location>;
+    public static ArrayList<Location> search(String userInput, ArrayList<Location> locations){
+        ArrayList<Location> filtered_locations = new ArrayList<Location>();
+
         for(int i=0;i<locations.size();i++){
             if(locations.get(i).getName().toLowerCase().contains(userInput.toLowerCase())){
                 filtered_locations.add(locations.get(i));
             }
         }
-        if(filtered_locations.size() > 0)
-            return filtered_locations;
-        else
-            return
+
+        return filtered_locations;
     }
-    */
 }

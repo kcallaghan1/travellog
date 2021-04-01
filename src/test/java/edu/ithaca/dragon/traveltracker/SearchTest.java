@@ -17,14 +17,17 @@ public class SearchTest {
         Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
 
         ArrayList<Location> locations = new ArrayList<Location>();
+        ArrayList<Location> filtered_locations = new ArrayList<Location>();
+
         locations.add(location1);
         locations.add(location2);
         locations.add(location3);
 
-        assertTrue(search("Waffle Frolic", locations));  //Perfect match
-        assertTrue(search("waFfLe FrOlIc", locations));  //Case insensitive match
+        filtered_locations = search("a", locations);  //Partial match, should still return matching
+        for(int i =0;i<filtered_locations.size();i++){
+            System.out.println(filtered_locations.get(i).getName());
+        }
 
-        assertFalse(search("wafffffle frolic", locations)); //No match
     }
 
     @Test
