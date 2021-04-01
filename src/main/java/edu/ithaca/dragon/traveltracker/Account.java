@@ -1,4 +1,6 @@
-package edu.ithaca.dragon.bank;
+package edu.ithaca.dragon.traveltracker;
+
+import java.util.ArrayList;
 
 public class Account{
 
