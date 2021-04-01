@@ -24,10 +24,23 @@ public class SearchTest {
         locations.add(location3);
 
         filtered_locations = search("a", locations);  //Partial match, should still return matching
-        for(int i =0;i<filtered_locations.size();i++){
-            System.out.println(filtered_locations.get(i).getName());
-        }
 
+        assertEquals(3, filtered_locations.size());  //Partial match, should have all 3 locations
+        assertEquals("Waffle Frolic", filtered_locations.get(0).getName());  //Values should match
+
+        filtered_locations = search("s", locations);  //Partial match
+
+        assertEquals(2, filtered_locations.size());  //Partial match, should have 2 locations
+        assertEquals("Starbucks", filtered_locations.get(0).getName());  //Values should match
+
+        filtered_locations = search("d", locations);  //Partial match
+
+        assertEquals(1, filtered_locations.size());  //Partial match, should have one location
+        assertEquals("New Delhi Diamond's", filtered_locations.get(0).getName());  //Values should match
+
+        filtered_locations = search("x", locations);  //No match
+
+        assertEquals(0, filtered_locations.size());  //No match, 0 locations
     }
 
     @Test
