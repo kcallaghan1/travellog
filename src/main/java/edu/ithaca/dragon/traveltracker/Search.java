@@ -44,7 +44,7 @@ public class Search {
 
         for(int i=0;i<locations.size();i++){
             for(int k = 0;k<locations.get(i).getCategories().size();k++){
-                if(locations.get(i).getCategories().get(k).toString().toLowerCase().equals(userInput) && !filtered_locations.contains(locations.get(i)))
+                if(locations.get(i).getCategories().get(k).toString().toLowerCase().contains(userInput) && !filtered_locations.contains(locations.get(i)))
                     filtered_locations.add(locations.get(i));
             }
         }

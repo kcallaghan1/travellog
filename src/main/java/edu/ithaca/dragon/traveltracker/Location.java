@@ -14,7 +14,7 @@ public class Location {
             if (address.length() > 0){
                 this.name = name;
                 this.address = address;
-                categories = new ArrayList<>();
+                this.categories = new ArrayList<>();
             }
             else throw new IllegalArgumentException("The name for this location has been left empty.");
         }
@@ -31,5 +31,9 @@ public class Location {
 
     public List<Categories> getCategories(){
         return categories;
+    }
+
+    public void setCategories(ArrayList<Categories> input_categories){
+        this.categories=input_categories;
     }
 }
