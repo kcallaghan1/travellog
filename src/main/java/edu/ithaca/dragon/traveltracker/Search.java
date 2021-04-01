@@ -1,6 +1,8 @@
 package edu.ithaca.dragon.traveltracker;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Search {
 
@@ -9,8 +11,14 @@ public class Search {
      *  letters, numbers, or spaces.  Returns false otherwise.
      */
 
-    public boolean isInputValid(String userInput) {
-        return (userInput == null) ? false : userInput.matches("[^A-Za-z0-9 ]");
+    public static boolean isInputValid(String userInput) {
+        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(userInput);
+        boolean b = m.find();
+
+        if (b)
+            return false;
+        return true;
     }
 
     /**
@@ -18,11 +26,26 @@ public class Search {
      *  returns false otherwise
      */
 
-    public static boolean Search(String userInput, ArrayList<Location> locations){
+
+    public static boolean search(String userInput, ArrayList<Location> locations){
         for(int i=0;i<locations.size();i++){
             if((userInput.toLowerCase()).equals(locations.get(i).getName().toLowerCase())){
                 return true;
             }
         }return false;
     }
+/*
+    public static ArrayList<Location> Search(String userInput, ArrayList<Location> locations){
+        ArrayList<Location> filtered_locations = new ArrayList<Location>;
+        for(int i=0;i<locations.size();i++){
+            if(locations.get(i).getName().toLowerCase().contains(userInput.toLowerCase())){
+                filtered_locations.add(locations.get(i));
+            }
+        }
+        if(filtered_locations.size() > 0)
+            return filtered_locations;
+        else
+            return
+    }
+    */
 }

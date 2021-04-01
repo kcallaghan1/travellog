@@ -2,6 +2,10 @@ package edu.ithaca.dragon.traveltracker;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
+import static edu.ithaca.dragon.traveltracker.Search.isInputValid;
+import static edu.ithaca.dragon.traveltracker.Search.search;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchTest {
@@ -12,7 +16,7 @@ public class SearchTest {
         Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
         Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
 
-        ArrayList<Location> locations = new ArrayList<Location>;
+        ArrayList<Location> locations = new ArrayList<Location>();
         locations.add(location1);
         locations.add(location2);
         locations.add(location3);
@@ -32,6 +36,6 @@ public class SearchTest {
         assertTrue(isInputValid("5 and Below"));  //Numbers and mixed case
 
         assertFalse(isInputValid("$tarbucks!")); // special characters ($!)
-        assertFalse(isInputvalid("Starbucks..?"); // special characters (.?)
+        assertFalse(isInputValid("Starbucks..?")); // special characters (.?)
     }
 }
