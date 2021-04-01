@@ -63,8 +63,8 @@ public class Account{
 
     TravelLog getLogWith(String name){
         for(int i = 0; i<tLogs.length; i++){
-            if(tLogs[i].getName ==  name){
-                return tLogs[i];
+            if(tLogs.get(i).getName ==  name){
+                return tLogs.get(i);
             }
         }
         return null;
