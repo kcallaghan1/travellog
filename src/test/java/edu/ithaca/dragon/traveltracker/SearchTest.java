@@ -19,9 +19,11 @@ public class SearchTest {
 
         assertTrue(search("Waffle Frolic", locations));  //Perfect match
         assertTrue(search("waFfLe FrOlIc", locations));  //Case insensitive match
-        assertTrue(search("wafffffle frolic", locations)); //No match
+
+        assertFalse(search("wafffffle frolic", locations)); //No match
     }
 
+    @Test
     void isInputValidTest(){
         assertTrue(isInputValid("StarBucks"));  //Mixing cases
         assertTrue(isInputValid("starbucks"));  //Lower case
