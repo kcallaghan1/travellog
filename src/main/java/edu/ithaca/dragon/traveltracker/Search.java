@@ -22,8 +22,8 @@ public class Search {
     }
 
     /**
-     *  Returns true if the location is in the locations database
-     *  returns false otherwise
+     *  Returns a list of locations if the location was searched for by name
+     *  returns an empty list if otherwise
      */
 
 
@@ -38,6 +38,11 @@ public class Search {
 
         return filtered_locations;
     }
+
+    /**
+     *  Returns a list of locations if the location belongs to the category searched for
+     *  returns an empty list if otherwise
+     */
 
     public static ArrayList<Location> searchCategories(String userInput, ArrayList<Location> locations){
         ArrayList<Location> filtered_locations = new ArrayList<Location>();
