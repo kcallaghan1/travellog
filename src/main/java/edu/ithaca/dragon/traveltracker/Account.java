@@ -1,5 +1,7 @@
 package edu.ithaca.dragon.traveltracker;
 
+import java.util.ArrayList;
+
 public class Account{
 
     private String username;
