@@ -8,6 +8,11 @@ public class Library {
     ArrayList<Location> locationList;
     ArrayList<Account> accountList;
 
+    public Library(){
+        locationList = new ArrayList<Location>();
+        accountList = new ArrayList<Account>();
+    }
+
     void addAccount(Account a){
         accountList.add(a);
     }
