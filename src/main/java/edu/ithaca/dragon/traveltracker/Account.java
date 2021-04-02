@@ -61,6 +61,10 @@ public class Account{
         }
     }
 
+    public void addTravelLog(TravelLog log){
+        tLogs.add(log);
+    }
+
     TravelLog getLogWith(String name){
         for(int i = 0; i<tLogs.size(); i++){
             if(tLogs.get(i).getTitle() ==  name){
