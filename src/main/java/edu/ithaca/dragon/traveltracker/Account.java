@@ -62,8 +62,8 @@ public class Account{
     }
 
     TravelLog getLogWith(String name){
-        for(int i = 0; i<tLogs.length; i++){
-            if(tLogs.get(i).getName ==  name){
+        for(int i = 0; i<tLogs.size(); i++){
+            if(tLogs.get(i).getTitle() ==  name){
                 return tLogs.get(i);
             }
         }
@@ -86,16 +86,16 @@ public class Account{
         return fav.remove(i);
     }
 
-    Boolean verifyAccount(String usernameIn, String passIn){
-        if(usernameIn==username && passIn == password){
+    boolean verifyAccount(String usernameIn, String passIn){
+        if(usernameIn.equals(username) && passIn.equals(password)){
             return true;
         }
         return false;
     }
 
-    boolean resetPassword(String p1In, String p2In, String passIn){
-        if(p1In == p2In && passIn == password){
-            password = p1In;
+    boolean resetPassword(String newPass, String confirmNewPass, String oldPass){
+        if(newPass.equals(confirmNewPass) && oldPass.equals(password)){
+            password = newPass;
             return true;
         }
         else{
@@ -109,5 +109,9 @@ public class Account{
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

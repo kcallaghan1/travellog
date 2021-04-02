@@ -21,6 +21,18 @@ public class Location {
         else throw new IllegalArgumentException("The address of this location has been left empty.");
     }
 
+    public Location(String name, String address, ArrayList<Categories> categories){
+        if (name.length() > 0){
+            if (address.length() > 0){
+                this.name = name;
+                this.address = address;
+                this.categories = categories;
+            }
+            else throw new IllegalArgumentException("The name for this location has been left empty.");
+        }
+        else throw new IllegalArgumentException("The address of this location has been left empty.");
+    }
+
     public String getName(){
         return name;
     }
