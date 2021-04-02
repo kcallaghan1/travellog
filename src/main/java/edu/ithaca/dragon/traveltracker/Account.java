@@ -60,9 +60,8 @@ public class Account{
     public void addFav(Location name) throws IllegalArgumentException{
         boolean sameLocation = false;
         for (int i = 0; i < fav.size(); i++){
-            if (fav.get(i) == name){
+            if (fav.get(i) == name)
                 sameLocation = true;
-            }
         }
         if (sameLocation)
             throw new IllegalArgumentException("This location is already in the travel log.");
@@ -71,7 +70,15 @@ public class Account{
     }
 
     public void removeFav(Location name) throws IllegalArgumentException{
-        //TODO
+        boolean removed = false;
+        for (int i = 0; i < fav.size(); i++){
+            if (fav.get(i) == name){
+                fav.remove(fav.get(i));
+                removed = true;
+            }
+        }
+        if (!removed)
+            throw new IllegalArgumentException("This location is not in the fav list.");
     }
 
     TravelLog getLogWith(String name){
