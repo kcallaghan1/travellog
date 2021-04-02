@@ -70,6 +70,10 @@ public class Account{
             fav.add(name);
     }
 
+    public void removeFav(Location name) throws IllegalArgumentException{
+        //TODO
+    }
+
     TravelLog getLogWith(String name){
         return null;
     }
