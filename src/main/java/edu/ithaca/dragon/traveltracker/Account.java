@@ -67,7 +67,7 @@ public class Account{
 
     TravelLog getLogWith(String name){
         for(int i = 0; i<tLogs.size(); i++){
-            if(tLogs.get(i).getTitle() ==  name){
+            if(tLogs.get(i).getTitle().equals(name)){
                 return tLogs.get(i);
             }
         }
@@ -90,7 +90,9 @@ public class Account{
         return fav.remove(i);
     }
 
+  
     boolean verifyAccount(String usernameIn, String passIn){
+
         if(usernameIn.equals(username) && passIn.equals(password)){
             return true;
         }

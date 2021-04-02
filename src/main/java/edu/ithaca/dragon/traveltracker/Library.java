@@ -52,7 +52,7 @@ public class Library {
 
     void removeLocation(String name){
         for(int i = 0; i < locationList.size(); i++){
-            if(locationList.get(i).getName() == name){
+            if(locationList.get(i).getName().equals(name)){
                 locationList.remove(i);
             }
         }

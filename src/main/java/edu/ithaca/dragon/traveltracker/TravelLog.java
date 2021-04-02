@@ -36,7 +36,7 @@ public class TravelLog {
     public void addDestination(Location name) throws IllegalArgumentException{
         boolean sameLocation = false;
         for (int i = 0; i < places.size(); i++){
-            if (places.get(i) == name){
+            if (places.get(i).equals(name)){
                 sameLocation = true;
             }
         }
