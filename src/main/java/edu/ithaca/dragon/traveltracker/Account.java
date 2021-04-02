@@ -1,6 +1,7 @@
 package edu.ithaca.dragon.traveltracker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Account{
 
@@ -56,6 +57,10 @@ public class Account{
         }
     }
 
+    public void addFav(Location name){
+        //TODO
+    }
+
     TravelLog getLogWith(String name){
         return null;
     }
@@ -86,5 +91,9 @@ public class Account{
 
     public String getEmail() {
         return email;
+    }
+
+    public List<Location> getFav(){
+        return fav;
     }
 }
