@@ -57,8 +57,17 @@ public class Account{
         }
     }
 
-    public void addFav(Location name){
-        //TODO
+    public void addFav(Location name) throws IllegalArgumentException{
+        boolean sameLocation = false;
+        for (int i = 0; i < fav.size(); i++){
+            if (fav.get(i) == name){
+                sameLocation = true;
+            }
+        }
+        if (sameLocation)
+            throw new IllegalArgumentException("This location is already in the travel log.");
+        else
+            fav.add(name);
     }
 
     TravelLog getLogWith(String name){
