@@ -1,7 +1,6 @@
 package edu.ithaca.dragon.traveltracker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Library {
 

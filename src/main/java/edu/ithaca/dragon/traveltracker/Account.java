@@ -103,6 +103,14 @@ public class Account{
         }
     }
 
+    public ArrayList<TravelLog> getTravelLogs(){
+        return tLogs;
+    }
+
+    public ArrayList<Location> getFavorites(){
+        return fav;
+    }
+
     public String getUsername() {
         return username;
     }
