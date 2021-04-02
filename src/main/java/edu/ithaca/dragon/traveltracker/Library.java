@@ -1,7 +1,6 @@
 package edu.ithaca.dragon.traveltracker;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Library {
 
@@ -39,8 +38,8 @@ public class Library {
     }
 
     void removeLocation(String name){
-        for(int i = 0; i < locationList.length; i++){
-            if(locationList.get(i).getName() == name){
+        for(int i = 0; i < locationList.size(); i++){
+            if(locationList.get(i).getName().equals(name)){
                 locationList.remove(i);
             }
         }
