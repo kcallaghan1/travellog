@@ -7,6 +7,15 @@ public class Library {
     ArrayList<Location> locationList;
     ArrayList<Account> accountList;
 
+    public Library(){
+        locationList = new ArrayList<Location>();
+        accountList = new ArrayList<Account>();
+    }
+
+    void add(Account a){
+        accountList.add(a);
+    }
+
     void addAccount(Account a){
         accountList.add(a);
     }
@@ -23,6 +32,10 @@ public class Library {
         if(a.verifyAccount(username, password)){
             accountList.remove(a);
         }
+    }
+
+    void add(Location loc){
+        locationList.add(loc);
     }
 
     void addLocation(String name, String address, ArrayList<Categories> categories){
@@ -47,6 +60,14 @@ public class Library {
 
     Boolean isValid(String name){
         return true;
+    }
+
+    ArrayList<Account> getAccountList(){
+        return accountList;
+    }
+
+    ArrayList<Location> getLocationList(){
+        return locationList;
     }
 
 }

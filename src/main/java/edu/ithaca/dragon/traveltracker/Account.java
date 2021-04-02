@@ -61,6 +61,10 @@ public class Account{
         }
     }
 
+    public void addTravelLog(TravelLog log){
+        tLogs.add(log);
+    }
+
     TravelLog getLogWith(String name){
         for(int i = 0; i<tLogs.size(); i++){
             if(tLogs.get(i).getTitle().equals(name)){
@@ -86,7 +90,9 @@ public class Account{
         return fav.remove(i);
     }
 
-    Boolean verifyAccount(String usernameIn, String passIn){
+  
+    boolean verifyAccount(String usernameIn, String passIn){
+
         if(usernameIn.equals(username) && passIn.equals(password)){
             return true;
         }
@@ -101,6 +107,14 @@ public class Account{
         else{
             return false;
         }
+    }
+
+    public ArrayList<TravelLog> getTravelLogs(){
+        return tLogs;
+    }
+
+    public ArrayList<Location> getFavorites(){
+        return fav;
     }
 
     public String getUsername() {
