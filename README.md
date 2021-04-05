@@ -12,3 +12,6 @@ Link to Sprint 1 clas diagram:
 
 Sprint 1 Review Agenda: 
     https://docs.google.com/document/d/1bs-s56xOaBFBxPl2S9CGJ1s0Qm7sTqiuuwDVgVT6zbw/edit?usp=sharing
+    
+Sprint 1 Retrospective: 
+    https://docs.google.com/document/d/1gwihNZGYR9QlfwOC5aEMi2xGmAw6mYUqKJyXcgVB_3s/edit?usp=sharing
