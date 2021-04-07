@@ -12,11 +12,16 @@ public class Account{
     ArrayList<Location> fav;
 
     public Account(String username, String email, String password){
-        this.username=username;
-        this.email = email;
-        this.password = password;
-        tLogs = new ArrayList<TravelLog>();
-        fav = new ArrayList<Location>();
+        if(isEmailValid(email) || username.length()<6){
+            this.username=username;
+            this.email = email;
+            this.password = password;
+            tLogs = new ArrayList<TravelLog>();
+            fav = new ArrayList<Location>();
+        }
+        else{
+            throw new IllegalArgumentException("Invalid email or username");
+        }
     }
 
     public static boolean isEmailValid(String email){
@@ -80,29 +85,62 @@ public class Account{
         if (!removed)
             throw new IllegalArgumentException("This location is not in the fav list.");
     }
+  
+    public void addTravelLog(TravelLog log){
+        tLogs.add(log);
+
+    }
 
     TravelLog getLogWith(String name){
+        for(int i = 0; i<tLogs.size(); i++){
+            if(tLogs.get(i).getTitle().equals(name)){
+                return tLogs.get(i);
+            }
+        }
         return null;
+    }
+
+    TravelLog getLogAt(int i){
+        return tLogs.get(i);
     }
 
     TravelLog removeLogAt(int i){
-        return null;
+        return tLogs.remove(i);
     }
 
     Location getFavAt(int i){
-        return null;
+        return fav.get(i);
     }
 
     Location removeFavAt(int i){
-        return null;
+        return fav.remove(i);
     }
 
-    Boolean verifyAccount(String usernameIn, String passIn){
+  
+    boolean verifyAccount(String usernameIn, String passIn){
+
+        if(usernameIn.equals(username) && passIn.equals(password)){
+            return true;
+        }
         return false;
     }
 
-    void resetPassword(String p1In, String p2In, String passIn){
+    boolean resetPassword(String newPass, String confirmNewPass, String oldPass){
+        if(newPass.equals(confirmNewPass) && oldPass.equals(password)){
+            password = newPass;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
+    public ArrayList<TravelLog> getTravelLogs(){
+        return tLogs;
+    }
+
+    public ArrayList<Location> getFavorites(){
+        return fav;
     }
 
     public String getUsername() {
@@ -115,5 +153,9 @@ public class Account{
 
     public List<Location> getFav(){
         return fav;
+    }
+  
+    public String getPassword() {
+        return password;
     }
 }

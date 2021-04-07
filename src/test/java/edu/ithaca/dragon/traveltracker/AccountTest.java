@@ -33,7 +33,7 @@ class AccountTest {
     void resetPasswordTest(){
         Account a = new Account("Happy", "s@s.com", "party123");
         assertTrue(a.verifyAccount("Happy", "party123"));
-        a.resetPassword("party123", "party123", "newparty123");
+        a.resetPassword("newparty123", "newparty123", "party123");
         assertFalse(a.verifyAccount("Happy", "party123"));
         assertTrue(a.verifyAccount("Happy", "newparty123"));
 
