@@ -1,6 +1,7 @@
 package edu.ithaca.dragon.traveltracker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Account{
 
@@ -61,8 +62,33 @@ public class Account{
         }
     }
 
+    public void addFav(Location name) throws IllegalArgumentException{
+        boolean sameLocation = false;
+        for (int i = 0; i < fav.size(); i++){
+            if (fav.get(i) == name)
+                sameLocation = true;
+        }
+        if (sameLocation)
+            throw new IllegalArgumentException("This location is already in the travel log.");
+        else
+            fav.add(name);
+    }
+
+    public void removeFav(Location name) throws IllegalArgumentException{
+        boolean removed = false;
+        for (int i = 0; i < fav.size(); i++){
+            if (fav.get(i) == name){
+                fav.remove(fav.get(i));
+                removed = true;
+            }
+        }
+        if (!removed)
+            throw new IllegalArgumentException("This location is not in the fav list.");
+    }
+  
     public void addTravelLog(TravelLog log){
         tLogs.add(log);
+
     }
 
     TravelLog getLogWith(String name){
@@ -125,6 +151,10 @@ public class Account{
         return email;
     }
 
+    public List<Location> getFav(){
+        return fav;
+    }
+  
     public String getPassword() {
         return password;
     }

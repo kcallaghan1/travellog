@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class AccountTest {
 
     @Test
@@ -34,6 +37,64 @@ class AccountTest {
         assertFalse(a.verifyAccount("Happy", "party123"));
         assertTrue(a.verifyAccount("Happy", "newparty123"));
 
+    }
+
+    @Test
+    void addFavTest(){
+        Account a = new Account("Happy", "s@s.com", "party123");
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        List<Location> compare = new ArrayList<>();
+        compare.add(location1);
+
+        //Fav list in account should be intitally empty
+        assertNotEquals(compare, a.getFav());
+        //Adding a location to the fav list
+        a.addFav(location1);
+        assertEquals(compare, a.getFav());
+        //Adding multiple locations
+        compare.add(location2);
+        compare.add(location3);
+        assertNotEquals(compare, a.getFav());
+        a.addFav(location2);
+        a.addFav(location3);
+        assertEquals(compare, a.getFav());
+        //adding the same location
+        assertThrows(IllegalArgumentException.class, () -> a.addFav(location1));
+    }
+
+    @Test
+    void removeFavTest(){
+        Account a = new Account("Happy", "s@s.com", "party123");
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        a.addFav(location1);
+        a.addFav(location2);
+        a.addFav(location3);
+
+        List<Location> compare = new ArrayList<>();
+        compare.add(location1);
+        compare.add(location2);
+        compare.add(location3);
+
+        //base case
+        a.removeFav(location1);
+        assertNotEquals(compare, a.getFav());
+        compare.remove(location1);
+        assertEquals(compare, a.getFav());
+        //removing an already removed location
+        assertThrows(IllegalArgumentException.class, () -> a.removeFav(location1));
+        //removing mutliple locations
+        a.removeFav(location2);
+        a.removeFav(location3);
+        assertNotEquals(compare, a.getFav());
+        compare.remove(location2);
+        compare.remove(location3);
+        assertEquals(compare, a.getFav());
     }
 
 }
