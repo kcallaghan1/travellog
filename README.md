@@ -13,4 +13,4 @@ Josh edited
 
 ## Sprint 2
 * Goal: Admin can house a database location and user can create their favorite
-    -[Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing) (click on 'Sprint 2 - Class Diagram' tab on the bottom)
+    - [Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing) (click on 'Sprint 2 - Class Diagram' tab on the bottom)
