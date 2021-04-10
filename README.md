@@ -5,8 +5,19 @@ This is a readme. As the title suggests, you should read me.
 
 ## Database Notes
 The database is written in SQLite, any queries to that database should be done using Java's documentation on incorporating SQLite.
+If there are any issues accessing the database check the documentation on Xerial/JDBC. 
+https://github.com/xerial/sqlite-jdbc
 
-Josh edited
+If you're running into an issue where they can't find the JDBC class, you simply have to go to this link: https://github.com/xerial/sqlite-jdbc/releases
+and download the "sqlite-jdbc-3.32.3.2.jar". Once you have this jar library file you need to add it to your project through your IDE's method of adding jar
+files.
+
+If you receive a "SQLite Database is Locked" error, it's because you haven't closed your last connection to the database before creating a new one. db.close()
+
+When querying the database you should use executeQuery() paired with a ResultSet object, when altering the database you should use executeUpdate(). This is 
+because the ResultSet object can store the information that you queried, allowing you to operate on the data. This can then be put back into the database 
+with an executeUpdate(). The executeUpdate() doesn't need an object because you don't store anything in the program from that command, it's a way to push
+your changes to the database.
 
 ## Sprint 1
 * Goal: User should be able to search/find locations and add/remove them from their travel log.
