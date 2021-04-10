@@ -5,6 +5,10 @@ This is a readme. As the title suggests, you should read me.
 
 ## Database Notes
 The database is written in SQLite, any queries to that database should be done using Java's documentation on incorporating SQLite.
+If there are any issues accessing the database check the documentation on Xerial/JDBC. https://github.com/xerial/sqlite-jdbc
+If you're running into an issue where they can't find the JDBC class, you simply have to go to this link: https://github.com/xerial/sqlite-jdbc/releases
+and download the "sqlite-jdbc-3.32.3.2.jar". Once you have this jar library file you need to add it to your project through your IDE's method of adding jar
+files.
 
 Josh edited
 
