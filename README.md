@@ -14,6 +14,11 @@ files.
 
 If you receive a "SQLite Database is Locked" error, it's because you haven't closed your last connection to the database before creating a new one. db.close()
 
+When querying the database you should use executeQuery() paired with a ResultSet object, when altering the database you should use executeUpdate(). This is 
+because the ResultSet object can store the information that you queried, allowing you to operate on the data. This can then be put back into the database 
+with an executeUpdate(). The executeUpdate() doesn't need an object because you don't store anything in the program from that command, it's a way to push
+your changes to the database.
+
 ## Sprint 1
 * Goal: User should be able to search/find locations and add/remove them from their travel log.
     - [Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing) (click on 'Sprint 1 - Class Diagram' tab on the bottom)
