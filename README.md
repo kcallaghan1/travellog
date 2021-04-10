@@ -3,6 +3,9 @@ Travel Tracker for CS 345
 
 This is a readme. As the title suggests, you should read me.
 
+## Database Notes
+The database is written in SQLite, any queries to that database should be done using Java's documentation on incorporating SQLite.
+
 Josh edited
 
 ## Sprint 1
