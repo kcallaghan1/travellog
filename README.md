@@ -10,8 +10,6 @@ If you're running into an issue where they can't find the JDBC class, you simply
 and download the "sqlite-jdbc-3.32.3.2.jar". Once you have this jar library file you need to add it to your project through your IDE's method of adding jar
 files.
 
-Josh edited
-
 ## Sprint 1
 * Goal: User should be able to search/find locations and add/remove them from their travel log.
     - [Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing) (click on 'Sprint 1 - Class Diagram' tab on the bottom)
