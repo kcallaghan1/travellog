@@ -11,10 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseTest {
 
-    @Test
+
     /*
         Simple checking to be sure the database connects, if not it will throw an exception
      */
+    @Test
     void connectionTest(){
         Connection con = Database.connect();
     }
@@ -49,5 +50,34 @@ public class DatabaseTest {
 
         System.out.println(email + ", " + username +", "
         +password + ", "+permissions);
+
+        con.close();
+    }
+
+    /*
+        Testing adding/removing from the database dynamically
+        Displays how to use multiple statements in the most efficient/readable way
+        Notice how we use statement.executeUpdate() for updating the dataset, but we
+        use executeQuery() for searching through.
+     */
+    @Test
+    void updateTest() throws SQLException {
+        Connection con = Database.connect();
+        String sql = "" +
+                "INSERT INTO " +
+                "accounts (email, username, password, permissions) " +
+                "VALUES" +
+                "('cam@gmail.com', 'cam', 'cam123', 'user')";
+        Statement statement = con.createStatement();
+        statement.executeUpdate(sql);
+
+        sql = "" +
+                "DELETE FROM " +
+                "accounts " +
+                "WHERE email='cam@gmail.com'";
+
+        statement.executeUpdate(sql);
+        con.close();
+
     }
 }
