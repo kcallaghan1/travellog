@@ -160,6 +160,6 @@ public class Account{
     }
 
     public void requestAddLocation(Location name){
-        //TODO
+        Library.addLocationRequest(name);
     }
 }
