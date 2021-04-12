@@ -60,21 +60,13 @@ public class Library {
         }
     }
 
-    static void addLocationRequest(Location name) throws IllegalArgumentException{
+    static void locationRequest(Location name, String request) throws IllegalArgumentException{
         boolean sameLocation = false;
         for (int i = 0; i < addLocationRequests.size(); i++){
             if (addLocationRequests.get(i).equals(name)){
                 sameLocation = true;
             }
         }
-        if (sameLocation)
-            throw new IllegalArgumentException("This location is already in the request list");
-        else
-            addLocationRequests.add(name);
-    }
-
-    static void removeLocationRequest(Location name) throws IllegalArgumentException{
-        boolean sameLocation = false;
         for (int i = 0; i < removeLocationRequests.size(); i++){
             if (removeLocationRequests.get(i).equals(name)){
                 sameLocation = true;
@@ -82,7 +74,9 @@ public class Library {
         }
         if (sameLocation)
             throw new IllegalArgumentException("This location is already in the request list");
-        else
+        else if (request.equals("add"))
+            addLocationRequests.add(name);
+        else if (request.equals("remove"))
             removeLocationRequests.add(name);
     }
 

@@ -160,10 +160,10 @@ public class Account{
     }
 
     public void requestAddLocation(Location name){
-        Library.addLocationRequest(name);
+        Library.locationRequest(name, "add");
     }
 
     public void requestRemoveLocation(Location name){
-        Library.removeLocationRequest(name);
+        Library.locationRequest(name, "remove");
     }
 }
