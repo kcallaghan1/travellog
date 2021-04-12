@@ -162,4 +162,8 @@ public class Account{
     public void requestAddLocation(Location name){
         Library.addLocationRequest(name);
     }
+
+    public void requestRemoveLocation(Location name){
+        //TODO
+    }
 }

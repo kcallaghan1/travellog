@@ -123,4 +123,31 @@ class AccountTest {
         //requesting the same location
         assertThrows(IllegalArgumentException.class, () -> a.requestAddLocation(location1));
     }
+
+    @Test
+    void requestRemoveLocationTest(){
+        Account a = new Account("Happy", "s@s.com", "party123");
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        ArrayList<Location> compare = new ArrayList<>();
+
+        //no requests
+        assertEquals(compare, Library.getRemoveLocationRequests());
+        //base case
+        a.requestRemoveLocation(location1);
+        assertNotEquals(compare, Library.getRemoveLocationRequests());
+        compare.add(location1);
+        assertEquals(compare, Library.getRemoveLocationRequests());
+        //requesting multiple locations
+        a.requestRemoveLocation(location2);
+        a.requestRemoveLocation(location3);
+        assertNotEquals(compare, Library.getRemoveLocationRequests());
+        compare.add(location2);
+        compare.add(location3);
+        assertEquals(compare, Library.getRemoveLocationRequests());
+        //requesting the same location
+        assertThrows(IllegalArgumentException.class, () -> a.requestRemoveLocation(location1));
+    }
 }
