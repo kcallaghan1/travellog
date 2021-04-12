@@ -158,4 +158,8 @@ public class Account{
     public String getPassword() {
         return password;
     }
+
+    public void requestAddLocation(Location name){
+        //TODO
+    }
 }
