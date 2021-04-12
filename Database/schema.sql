@@ -44,9 +44,9 @@ CREATE TABLE categories(
 
 CREATE TABLE loggedLocations(
 	id INTEGER PRIMARY KEY,
-	travelLogId INTEGER NOT NULL,
+	logId INTEGER NOT NULL,
 	locationId INTEGER NOT NULL,
-	FOREIGN KEY(travelLogId) REFERENCES travelLogs,
+	FOREIGN KEY(logId) REFERENCES travelLogs,
 	FOREIGN KEY(locationId) REFERENCES locations
 );
 
