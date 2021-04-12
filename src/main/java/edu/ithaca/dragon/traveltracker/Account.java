@@ -164,6 +164,6 @@ public class Account{
     }
 
     public void requestRemoveLocation(Location name){
-        //TODO
+        Library.removeLocationRequest(name);
     }
 }
