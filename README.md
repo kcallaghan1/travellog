@@ -8,9 +8,7 @@ The database is written in SQLite, any queries to that database should be done u
 If there are any issues accessing the database check the documentation on Xerial/JDBC. 
 https://github.com/xerial/sqlite-jdbc
 
-If you're running into an issue where they can't find the JDBC class, you simply have to go to this link: https://github.com/xerial/sqlite-jdbc/releases
-and download the "sqlite-jdbc-3.32.3.2.jar". Once you have this jar library file you need to add it to your project through your IDE's method of adding jar
-files.
+If you're running into an issue where they can't find the JDBC class, you simply have to find the "sqlite-jdbc-3.32.3.2.jar" in the root repositry of the Git. Once you have this jar library file you need to add it to your project's working library through your IDE's method of adding jar files.
 
 If you receive a "SQLite Database is Locked" error, it's because you haven't closed your last connection to the database before creating a new one. db.close()
 
