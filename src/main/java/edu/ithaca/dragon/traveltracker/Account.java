@@ -158,4 +158,12 @@ public class Account{
     public String getPassword() {
         return password;
     }
+
+    public void requestAddLocation(Location name){
+        Library.locationRequest(name, "add");
+    }
+
+    public void requestRemoveLocation(Location name){
+        Library.locationRequest(name, "remove");
+    }
 }

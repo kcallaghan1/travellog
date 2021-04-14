@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Library {
 
+    static ArrayList<Location> addLocationRequests = new ArrayList<>();
+    static ArrayList<Location> removeLocationRequests = new ArrayList<>();
     ArrayList<Location> locationList;
     ArrayList<Account> accountList;
 
@@ -58,6 +60,26 @@ public class Library {
         }
     }
 
+    static void locationRequest(Location name, String request) throws IllegalArgumentException{
+        boolean sameLocation = false;
+        for (int i = 0; i < addLocationRequests.size(); i++){
+            if (addLocationRequests.get(i).equals(name)){
+                sameLocation = true;
+            }
+        }
+        for (int i = 0; i < removeLocationRequests.size(); i++){
+            if (removeLocationRequests.get(i).equals(name)){
+                sameLocation = true;
+            }
+        }
+        if (sameLocation)
+            throw new IllegalArgumentException("This location is already in the request list");
+        else if (request.equals("add"))
+            addLocationRequests.add(name);
+        else if (request.equals("remove"))
+            removeLocationRequests.add(name);
+    }
+
     Boolean isValid(String name){
         return true;
     }
@@ -68,6 +90,14 @@ public class Library {
 
     ArrayList<Location> getLocationList(){
         return locationList;
+    }
+
+    static ArrayList<Location> getAddLocationRequests(){
+        return addLocationRequests;
+    }
+
+    static ArrayList<Location> getRemoveLocationRequests(){
+        return removeLocationRequests;
     }
 
 }
