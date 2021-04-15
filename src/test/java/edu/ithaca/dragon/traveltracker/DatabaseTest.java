@@ -61,23 +61,15 @@ public class DatabaseTest {
         use executeQuery() for searching through.
      */
     @Test
-    void updateTest() throws SQLException {
-        Connection con = Database.connect();
-        String sql = "" +
-                "INSERT INTO " +
-                "accounts (email, username, password, permissions) " +
-                "VALUES" +
-                "('cam@gmail.com', 'cam', 'cam123', 'user')";
-        Statement statement = con.createStatement();
-        statement.executeUpdate(sql);
+    void addAccountTest() throws SQLException {
+        Account acc = new Account("cam", "cam@gmail.com", "cam123");
+        Database.addAccount(acc);
+        Database.printAccounts();
+    }
 
-        sql = "" +
-                "DELETE FROM " +
-                "accounts " +
-                "WHERE email='cam@gmail.com'";
-
-        statement.executeUpdate(sql);
-        con.close();
-
+    @Test
+    void removeAccountTest() throws SQLException {
+        Database.removeAccountByUsername("cam");
+        Database.printAccounts();
     }
 }
