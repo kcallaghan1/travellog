@@ -104,7 +104,6 @@ public class Database {
     public static ArrayList<Location> findLocationByName(String locationName) throws SQLException {
         ArrayList<Location> filtered_locations = new ArrayList<Location>();
         Connection con = Database.connect();
-        int count = 0;
 
 
         String sql = "SELECT * FROM locations WHERE locationName LIKE ?";
@@ -114,12 +113,16 @@ public class Database {
 
         ResultSet result = statement.executeQuery();
         while(result.next()){
-            count++;
             String name = result.getString("locationName");
             String location = result.getString("locationAddress");
 
             filtered_locations.add(new Location(name, location));
         }
+        return filtered_locations;
+    }
+
+    public static ArrayList<Location> findLocationByCategory(String category) throws SQLException {
+        ArrayList<Location> filtered_locations = new ArrayList<>();
         return filtered_locations;
     }
 }
