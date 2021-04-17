@@ -9,9 +9,6 @@ import java.sql.Statement;
 
 public class Database {
 
-    public static int numAccounts = 2;
-    public static int numLocations = 1;
-
     public static Connection connect(){
         Connection con = null;
         try {
@@ -25,17 +22,15 @@ public class Database {
     }
 
     public static void addAccount(Account acc){
-        String sql = "INSERT INTO accounts(accountId,email,username,password,permissions) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO accounts(email,username,password,permissions) VALUES(?,?,?,?)";
 
         try (Connection conn = connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, numAccounts);
-            pstmt.setString(2, acc.getEmail());
-            pstmt.setString(3, acc.getUsername());
-            pstmt.setString(4, acc.getPassword());
-            pstmt.setString(5, "user");
+            pstmt.setString(1, acc.getEmail());
+            pstmt.setString(2, acc.getUsername());
+            pstmt.setString(3, acc.getPassword());
+            pstmt.setString(4, "user");
             pstmt.executeUpdate();
-            numAccounts++;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
