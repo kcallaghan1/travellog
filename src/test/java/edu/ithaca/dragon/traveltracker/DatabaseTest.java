@@ -72,4 +72,42 @@ public class DatabaseTest {
         Database.removeAccountByUsername("cam");
         Database.printAccounts();
     }
+
+    @Test
+    void addLocationTest() throws SQLException {
+        Connection con = Database.connect();
+
+        Location loc = new Location("Taco Shack", "123 Taco Lane");
+        Database.addLocation(loc);
+
+        String sql = "SELECT * FROM locations";
+        Statement statement = con.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        String name = result.getString("locationName");
+        String add = result.getString("locationAddress");
+
+        assertEquals("Taco Shack", name);
+        assertEquals("123 Taco Lane", add);
+
+
+    }
+
+    @Test
+    void removeLocationTest() throws SQLException{
+        Connection con = Database.connect();
+
+        Database.removeLocation("Taco Shack");
+
+        String sql = "SELECT * FROM locations WHERE locationName='Taco Shack'";
+        Statement statement = con.createStatement();
+        try {
+            ResultSet result = statement.executeQuery(sql);
+            assertEquals("Taco Shack", result.getString("locationName"));
+        }
+        catch(SQLException se){
+            System.out.println("Working, this means there was nothing to query");
+        }
+
+    }
 }

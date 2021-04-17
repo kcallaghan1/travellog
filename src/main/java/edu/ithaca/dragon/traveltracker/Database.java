@@ -72,4 +72,31 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void addLocation(Location loc){
+        String sql = "INSERT INTO locations(locationName, locationAddress) VALUES(?,?)";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, loc.getName());
+            pstmt.setString(2, loc.getAddress());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void removeLocation(String loc){
+        String sql = "DELETE FROM locations WHERE locationName = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, loc);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
