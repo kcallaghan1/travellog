@@ -110,4 +110,17 @@ public class DatabaseTest {
         }
 
     }
+
+    @Test
+    void findLocationByNameTest() throws SQLException{
+        assertEquals("Taco Shack", Database.findLocationByName("T").get(0).getName()); //Portion of first word
+        assertEquals("Taco Shack", Database.findLocationByName("Ac").get(0).getName()); //Case insensitive portion of first word
+        assertEquals("Taco Shack", Database.findLocationByName("Taco").get(0).getName()); //Entire First Word
+        assertEquals("Taco Shack", Database.findLocationByName("Sh").get(0).getName()); //Portion of second word
+        assertEquals("Taco Shack", Database.findLocationByName("aC").get(0).getName()); //Case insensitive Portion of second word
+        assertEquals("Taco Shack", Database.findLocationByName("Shack").get(0).getName()); //Whole Second Word
+        assertEquals("Taco Shack", Database.findLocationByName("Taco Shack").get(0).getName()); // Whole Word
+
+
+    }
 }

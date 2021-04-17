@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -98,5 +99,27 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static ArrayList<Location> findLocationByName(String locationName) throws SQLException {
+        ArrayList<Location> filtered_locations = new ArrayList<Location>();
+        Connection con = Database.connect();
+        int count = 0;
+
+
+        String sql = "SELECT * FROM locations WHERE locationName LIKE ?";
+
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, "%" + locationName + "%");
+
+        ResultSet result = statement.executeQuery();
+        while(result.next()){
+            count++;
+            String name = result.getString("locationName");
+            String location = result.getString("locationAddress");
+
+            filtered_locations.add(new Location(name, location));
+        }
+        return filtered_locations;
     }
 }
