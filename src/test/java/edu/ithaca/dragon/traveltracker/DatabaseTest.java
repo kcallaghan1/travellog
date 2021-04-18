@@ -75,27 +75,7 @@ public class DatabaseTest {
     }
 
     @Test
-    void addLocationTest() throws SQLException {
-        Connection con = Database.connect();
-
-        Location loc = new Location("Taco Shack", "123 Taco Lane");
-        Database.addLocation(loc);
-
-        String sql = "SELECT * FROM locations WHERE locationName='Taco Shack'";
-        Statement statement = con.createStatement();
-        ResultSet result = statement.executeQuery(sql);
-
-        String name = result.getString("locationName");
-        String add = result.getString("locationAddress");
-
-        assertEquals("Taco Shack", name);
-        assertEquals("123 Taco Lane", add);
-
-
-    }
-
-    @Test
-    void removeLocationTest() throws SQLException{
+    void addRemoveLocationTest() throws SQLException{
         Connection con = Database.connect();
 
         Location loc = new Location("removeTest", "123 remove test");

@@ -27,7 +27,7 @@ CREATE TABLE travelLogs(
 	accountId INTEGER NOT NULL,
 	logName TEXT NOT NULL,
 	logDescription TEXT,
-	FOREIGN KEY(accountId) REFERENCES accounts,
+	FOREIGN KEY(accountId) REFERENCES accounts ON DELETE CASCADE,
 	UNIQUE(logName, accountId)
 );
 
@@ -46,8 +46,8 @@ CREATE TABLE loggedLocations(
 	id INTEGER PRIMARY KEY,
 	logId INTEGER NOT NULL,
 	locationId INTEGER NOT NULL,
-	FOREIGN KEY(logId) REFERENCES travelLogs,
-	FOREIGN KEY(locationId) REFERENCES locations
+	FOREIGN KEY(logId) REFERENCES travelLogs ON DELETE CASCADE,
+	FOREIGN KEY(locationId) REFERENCES locations ON DELETE CASCADE
 );
 
 /*
@@ -60,8 +60,8 @@ CREATE TABLE locationToCategory(
 	id INTEGER PRIMARY KEY,
 	locationId INTEGER NOT NULL,
 	categoryId INTEGER NOT NULL,
-	FOREIGN KEY(locationId) REFERENCES locations,
-	FOREIGN KEY(categoryId) REFERENCES categories
+	FOREIGN KEY(locationId) REFERENCES locations ON DELETE CASCADE,
+	FOREIGN KEY(categoryId) REFERENCES categories ON DELETE CASCADE
 );
 
 /*
@@ -73,8 +73,8 @@ CREATE TABLE favorites(
 	favoriteId INTEGER PRIMARY KEY,
 	accountId INTEGER NOT NULL,
 	locationId INTEGER NOT NULL,
-	FOREIGN KEY(accountId) REFERENCES accounts,
-	FOREIGN KEY(locationId) REFERENCES locations,
+	FOREIGN KEY(accountId) REFERENCES accounts ON DELETE CASCADE,
+	FOREIGN KEY(locationId) REFERENCES locations ON DELETE CASCADE,
 	UNIQUE(accountId, locationId)
 );
 
@@ -88,8 +88,8 @@ CREATE TABLE pictures(
 	accountId INTEGER NOT NULL,
 	locationId INTEGER NOT NULL,
 	picturePath TEXT NOT NULL UNIQUE,
-	FOREIGN KEY(accountId) REFERENCES accounts,
-	FOREIGN KEY(locationID) REFERENCES locations,
+	FOREIGN KEY(accountId) REFERENCES accounts ON DELETE CASCADE,
+	FOREIGN KEY(locationID) REFERENCES locations ON DELETE CASCADE,
 	UNIQUE(accountId, locationId)
 );
 
