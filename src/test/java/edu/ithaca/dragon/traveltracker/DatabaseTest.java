@@ -98,13 +98,16 @@ public class DatabaseTest {
     void removeLocationTest() throws SQLException{
         Connection con = Database.connect();
 
-        Database.removeLocation("Taco Shack");
+        Location loc = new Location("removeTest", "123 remove test");
+        Database.addLocation(loc);
 
-        String sql = "SELECT * FROM locations WHERE locationName='Taco Shack'";
+        Database.removeLocation("removeTest");
+
+        String sql = "SELECT * FROM locations WHERE locationName='removeTest'";
         Statement statement = con.createStatement();
         try {
             ResultSet result = statement.executeQuery(sql);
-            assertEquals("Taco Shack", result.getString("locationName"));
+            assertEquals("removeTest", result.getString("locationName"));
         }
         catch(SQLException se){
             System.out.println("Working, this means there was nothing to query");
