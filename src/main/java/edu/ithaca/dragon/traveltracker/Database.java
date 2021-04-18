@@ -1,5 +1,7 @@
 package edu.ithaca.dragon.traveltracker;
 
+import org.sqlite.SQLiteConfig;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,7 +16,9 @@ public class Database {
         Connection con = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:Database/TravelTracker.db");
+            SQLiteConfig config = new SQLiteConfig();
+            config.enforceForeignKeys(true);
+            con = DriverManager.getConnection("jdbc:sqlite:Database/TravelTracker.db", config.toProperties());
             System.out.println("Connected To Database");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e+"");

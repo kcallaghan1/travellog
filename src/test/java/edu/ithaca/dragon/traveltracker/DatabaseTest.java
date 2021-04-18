@@ -84,10 +84,14 @@ public class DatabaseTest {
     void RemoveLocationTest() throws SQLException{
         Connection con = Database.connect();
 
+        Location loc = new Location("removeTest", "123 remove test");
+        Database.addLocation(loc);
+
         Database.removeLocation("removeTest");
 
         String sql = "SELECT * FROM locations WHERE locationName='removeTest'";
         Statement statement = con.createStatement();
+        statement.executeUpdate("PRAGMA FOREIGN_KEYS = ON");
         try {
             ResultSet result = statement.executeQuery(sql);
             assertEquals("removeTest", result.getString("locationName"));
