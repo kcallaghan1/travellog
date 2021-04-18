@@ -118,6 +118,7 @@ public class Database {
 
             filtered_locations.add(new Location(name, location));
         }
+        con.close();
         return filtered_locations;
     }
 
