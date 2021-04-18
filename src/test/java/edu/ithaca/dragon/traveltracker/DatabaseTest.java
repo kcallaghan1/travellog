@@ -120,13 +120,16 @@ public class DatabaseTest {
         {
             System.out.println(filteredLocations.get(i).getName());
         }
-
     }
 
     @Test
     void findLocationByCategoryTest() throws SQLException{
-        //assertEquals("Taco Shack", Database.findLocationByCategory("Fast Food").get(0).getName()); //Category 1 with Location 1
-        //assertEquals("Taco Shack", Database.findLocationByCategory("Restaurant").get(0).getName()); //Category 2 with Location 1
-        //assertEquals("Banana Town", Database.findLocationByCategory("Fast Food").get(1).getName()); //Category 1 with Location 1
+        ArrayList<Location> filteredLocations = new ArrayList<>();
+        System.out.println("Search String: 'Restaurant'");
+        filteredLocations = Database.findLocationByCategory("Restaurant");
+        for(int i = 0; i < filteredLocations.size() ; i++)
+        {
+            System.out.println(filteredLocations.get(i).getName());
+        }
     }
 }

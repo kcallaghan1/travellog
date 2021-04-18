@@ -122,7 +122,30 @@ public class Database {
     }
 
     public static ArrayList<Location> findLocationByCategory(String category) throws SQLException {
-        ArrayList<Location> filtered_locations = new ArrayList<>();
+        ArrayList<Location> filtered_locations = new ArrayList<Location>();
+        Connection con = Database.connect();
+
+
+        String sql = "SELECT\n" +
+                "       l.locationId, l.locationName, l.locationAddress, ltc.categoryId, c.categoryName\n" +
+                "FROM\n" +
+                "     locations l\n" +
+                "JOIN\n" +
+                "    locationToCategory ltc on l.locationId = ltc.locationId\n" +
+                "JOIN categories c on ltc.categoryId = c.categoryId\n" +
+                "WHERE\n" +
+                "    c.categoryName LIKE ?";
+
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, "%" + category+ "%");
+
+        ResultSet result = statement.executeQuery();
+        while(result.next()){
+            String name = result.getString("locationName");
+            String location = result.getString("locationAddress");
+
+            filtered_locations.add(new Location(name, location));
+        }
         return filtered_locations;
     }
 }
