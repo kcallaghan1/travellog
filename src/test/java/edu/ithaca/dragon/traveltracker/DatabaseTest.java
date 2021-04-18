@@ -75,11 +75,14 @@ public class DatabaseTest {
     }
 
     @Test
-    void addRemoveLocationTest() throws SQLException{
-        Connection con = Database.connect();
-
+    void addLocationTest() throws SQLException{
         Location loc = new Location("removeTest", "123 remove test");
         Database.addLocation(loc);
+    }
+
+    @Test
+    void RemoveLocationTest() throws SQLException{
+        Connection con = Database.connect();
 
         Database.removeLocation("removeTest");
 
