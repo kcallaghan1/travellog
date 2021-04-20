@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,5 +72,54 @@ public class DatabaseTest {
     void removeAccountTest() throws SQLException {
         Database.removeAccountByUsername("cam");
         Database.printAccounts();
+    }
+
+    @Test
+    void addLocationTest() throws SQLException{
+        Location loc = new Location("removeTest", "123 remove test");
+        Database.addLocation(loc);
+    }
+
+    @Test
+    void RemoveLocationTest() throws SQLException{
+        Connection con = Database.connect();
+
+        Location loc = new Location("removeTest", "123 remove test");
+        Database.addLocation(loc);
+
+        Database.removeLocation("removeTest");
+
+        String sql = "SELECT * FROM locations WHERE locationName='removeTest'";
+        Statement statement = con.createStatement();
+        statement.executeUpdate("PRAGMA FOREIGN_KEYS = ON");
+        try {
+            ResultSet result = statement.executeQuery(sql);
+            assertEquals("removeTest", result.getString("locationName"));
+        }
+        catch(SQLException se){
+            System.out.println("Working, this means there was nothing to query");
+        }
+
+    }
+
+    @Test
+    void findLocationByNameTest() throws SQLException{
+        ArrayList<Location> filteredLocations = new ArrayList<>();
+        filteredLocations = Database.findLocationByName("T");
+        for(int i = 0; i < filteredLocations.size() ; i++)
+        {
+            System.out.println(filteredLocations.get(i).getName());
+        }
+    }
+
+    @Test
+    void findLocationByCategoryTest() throws SQLException{
+        ArrayList<Location> filteredLocations = new ArrayList<>();
+        System.out.println("Search String: 'Restaurant'");
+        filteredLocations = Database.findLocationByCategory("Restaurant");
+        for(int i = 0; i < filteredLocations.size() ; i++)
+        {
+            System.out.println(filteredLocations.get(i).getName());
+        }
     }
 }
