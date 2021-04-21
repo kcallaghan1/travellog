@@ -42,6 +42,23 @@ public class Database {
     }
 
 
+    public static void updatePassword(Account acc){
+        String sql = "UPDATE accounts SET password = ?" + " WHERE accountId = ?";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, acc.getPassword());
+            pstmt.setInt(2, acc.getAccountId());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
     public static void removeAccountByUsername(String username){
         String sql = "DELETE FROM accounts WHERE username = ?";
 
@@ -77,6 +94,54 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public static ArrayList<Account> getAccounts(){
+        String sql = "Select * from accounts";
+        ArrayList<Account> accounts = new ArrayList<Account>();
+        try (Connection conn = Database.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            
+            // loop through the result set
+            while (rs.next()) {
+
+                String email = rs.getString("email");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int accountId = rs.getInt("accountId");
+
+                accounts.add(new Account(username, email, password, accountId));
+            }
+        }    
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return accounts;
+    }
+
+
+    public static Account findAccountByUsername(String username) {
+        String sql = "SELECT * FROM accounts WHERE username = ?";
+
+        try(Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setString(1, username);
+                ResultSet rs = pstmt.executeQuery();
+
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                int accountId = rs.getInt("accountId");
+                return new Account(username, email, password, accountId);
+            }
+
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
 
     public static void addLocation(Location loc){
         String sql = "INSERT INTO locations(locationName, locationAddress) VALUES(?,?)";
@@ -152,5 +217,28 @@ public class Database {
             filtered_locations.add(new Location(name, location));
         }
         return filtered_locations;
+    }
+
+
+    public static ArrayList<Location> getLocations() throws SQLException {
+        ArrayList<Location> locations = new ArrayList<Location>();
+        String sql = "Select * from locations";
+        try (Connection conn = Database.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+            
+            // loop through the result set
+            while (rs.next()) {
+
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+
+                locations.add(new Location(name, address));
+            }
+        }    
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return locations;
     }
 }

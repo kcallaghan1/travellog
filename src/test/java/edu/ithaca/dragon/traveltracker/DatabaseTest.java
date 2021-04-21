@@ -75,6 +75,33 @@ public class DatabaseTest {
     }
 
     @Test
+    void getAccountsTest() throws SQLException {
+        ArrayList<Account> accounts = Database.getAccounts();
+        for(Account cur : accounts){
+            System.out.println(cur.getUsername());
+            System.out.println(cur.getEmail());
+        }
+    }
+
+    @Test
+    void findAccountByUsernameTest() throws SQLException {
+        Account acc = new Account("admin", "admin@gmail.com", "admin123");
+        Account returned = Database.findAccountByUsername("admin");
+        assertEquals(acc.getUsername(), returned.getUsername());
+        assertEquals(acc.getEmail(), returned.getEmail());
+        assertEquals(acc.getPassword(), returned.getPassword());
+    }
+
+    @Test
+    void updatePasswordTest() throws SQLException {
+        Account acc = Database.findAccountByUsername("cam");
+        acc.resetPassword("cam1234", "cam1234", "cam123");
+        Database.updatePassword(acc);
+        Account acc2 = Database.findAccountByUsername("cam");
+        assertEquals(acc2.getPassword(), "cam1234");
+    }
+
+    @Test
     void addLocationTest() throws SQLException{
         Location loc = new Location("removeTest", "123 remove test");
         Database.addLocation(loc);

@@ -8,6 +8,8 @@ public class Account{
     private String username;
     private String email;
     private String password;
+    private String permissions;
+    private int accountId;
     ArrayList<TravelLog> tLogs;
     ArrayList<Location> fav;
 
@@ -16,6 +18,22 @@ public class Account{
             this.username=username;
             this.email = email;
             this.password = password;
+            permissions = "user";
+            tLogs = new ArrayList<TravelLog>();
+            fav = new ArrayList<Location>();
+        }
+        else{
+            throw new IllegalArgumentException("Invalid email or username");
+        }
+    }
+
+    public Account(String username, String email, String password, int accountId){
+        if(isEmailValid(email) || username.length()<6){
+            this.username=username;
+            this.email = email;
+            this.password = password;
+            this.accountId = accountId;
+            permissions = "user";
             tLogs = new ArrayList<TravelLog>();
             fav = new ArrayList<Location>();
         }
@@ -157,6 +175,14 @@ public class Account{
   
     public String getPassword() {
         return password;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public int getAccountId(){
+        return accountId;
     }
 
     public void requestAddLocation(Location name){

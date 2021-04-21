@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-    public static Account login(Library lib, Scanner sc){
+    public static Account login(Scanner sc){
         boolean loginSuccess = false;
         String userIn, passIn;
         Account acc = null;
@@ -31,22 +31,21 @@ public class UserInterface {
                 return null;
             }
             else {
-                for(int i = 0; i < lib.accountList.size(); i++){
-                    if(lib.accountList.get(i).getUsername().equals(userIn)){
-                        if(lib.accountList.get(i).getPassword().equals(passIn)){
-                            loginSuccess = true;
-                            acc = lib.accountList.get(i);
-                        }
+                acc = Database.findAccountByUsername(userIn);
+                if(acc != null){
+                    if(passIn.equals(acc.getPassword())){
+                        loginSuccess = true;
+                        break;
                     }
                 }
-                System.out.println("Username or password are invalid.\n");
             }
+            System.out.println("Username or password are invalid.\n");
         }
         return acc;
     }    
     
     
-    public static Account register(Library lib, Scanner sc){
+    public static Account register(Scanner sc){
         boolean userDone = false, emailDone = false, passDone = false;
         String username = "", email = "", password = "";
 
@@ -103,16 +102,16 @@ public class UserInterface {
             }
         }
         Account acc = new Account(username, email, password);
-        lib.addAccount(acc);
+        Database.addAccount(acc);
         return acc;
     }
 
 
-    public static void openTravelLogs(Account currentAccount, Library lib, Scanner sc){
+    public static void openTravelLogs(Account currentAccount, Scanner sc){
 
         boolean open = true;
         while(open){
-            System.out.println("Select a travel log, 'b' for back, or 'q' to quit.");
+            System.out.println("Select a travel log, 'e' to edit list, 'b' for back, or 'q' to quit.");
 
             for(int i = 0; i < currentAccount.getTravelLogs().size(); i++){
                 System.out.println((i+1) + ". " + currentAccount.getLogAt(i).getTitle());
@@ -160,6 +159,19 @@ public class UserInterface {
 
     public static void changePassword(Account currentAccount, Scanner sc){
 
+        System.out.println("Current password: \n");
+        String oldPass = sc.nextLine();
+        System.out.println("New password: \n");
+        String newPass = sc.nextLine();
+        System.out.println("Confirm new password: \n");
+        String confNewPass = sc.nextLine();
+
+        if(currentAccount.resetPassword(newPass, confNewPass, oldPass)){
+            Database.updatePassword(currentAccount);
+        }
+        else{
+            System.out.println("Current password is incorrect or new passwords do not match.\n");
+        }
     }
 
 
@@ -180,7 +192,7 @@ public class UserInterface {
             int userInput = Integer.parseInt(sc.nextLine());
             switch(userInput){
                 case 1:
-                    openTravelLogs(currentAccount, lib, sc);
+                    openTravelLogs(currentAccount, sc);
                     break;
                 case 2:
                     openFavorites(currentAccount, sc);
@@ -217,13 +229,13 @@ public class UserInterface {
                 String response = sc.nextLine();
 
                 if(response.equalsIgnoreCase("l")){
-                    currentAccount = login(lib, sc);
+                    currentAccount = login(sc);
                     if(currentAccount != null){
                         loggedIn = true;
                     }
                 }
                 else if(response.equalsIgnoreCase("r")){
-                    currentAccount = register(lib, sc);
+                    currentAccount = register(sc);
                     if(currentAccount != null){
                         loggedIn = true;
                     }
