@@ -2,6 +2,10 @@
 Travel Tracker for CS 345
 
 This is a readme. As the title suggests, you should read me.
+## DisplayImage.java
+* Credit for the code: [Jan Bodnar](https://github.com/janbodnar)
+    - [Github Repository](https://github.com/janbodnar/Display-Image.git)
+    - [Tutorial Link](https://zetcode.com/java/displayimage/)
 
 ## Database Notes
 The database is written in SQLite, any queries to that database should be done using Java's documentation on incorporating SQLite.
