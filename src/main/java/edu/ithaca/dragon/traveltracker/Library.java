@@ -80,14 +80,6 @@ public class Library {
             removeLocationRequests.add(name);
     }
 
-    static void approveLocationRequest(Location name, String request){
-        //TODO
-    }
-
-    static void denyLocationRequest(Location name, String request){
-        //TODO
-    }
-
     Boolean isValid(String name){
         return true;
     }
