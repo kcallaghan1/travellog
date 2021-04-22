@@ -22,6 +22,29 @@ public class Admin {
         return false;
     }
 
+    public void viewLocationRequests(String listname){
+        if (listname.equals("add")){
+            System.out.println("Locations to add requests:");
+            if(Library.getAddLocationRequests().isEmpty())
+                System.out.println("");
+            else{
+                for (int i = 0; i < Library.getAddLocationRequests().size(); i++){
+                    System.out.println(Library.getAddLocationRequests().get(i).getName() + ", " + Library.getAddLocationRequests().get(i).getAddress());
+                }
+            }
+        }
+        else if (listname.equals("remove")){
+            System.out.println("Locations to remove requests:");
+            if(Library.getAddLocationRequests().isEmpty())
+                System.out.println("");
+            else{
+                for (int i = 0; i < Library.getRemoveLocationRequests().size(); i++){
+                    System.out.println(Library.getRemoveLocationRequests().get(i).getName() + ", " + Library.getRemoveLocationRequests().get(i).getAddress());
+                }
+            }
+        }
+    }
+
     public void approveRequest(Location name){
         Library.approveLocationRequest(name, "add");
     }
