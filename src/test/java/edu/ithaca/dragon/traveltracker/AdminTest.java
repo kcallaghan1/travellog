@@ -26,6 +26,7 @@ public class AdminTest {
     void approveAddLocationRequestTest(){
         Admin admin = new Admin("AdminUser", "password");
         Account a = new Account("Happy", "s@s.com", "party123");
+        Library lib = new Library();
 
         Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
         Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
@@ -34,7 +35,7 @@ public class AdminTest {
         ArrayList<Location> compareLib = new ArrayList<>();
         ArrayList<Location> compareRequest = new ArrayList<>();
 
-        admin.addLocation(location1);
+        lib.addLocation(location1);
         compareLib.add(location1);
         a.requestAddLocation(location2);
         a.requestAddLocation(location3);
@@ -42,18 +43,18 @@ public class AdminTest {
         compareRequest.add(location3);
         
         //deafult list
-        assertEquals(compareLib, admin.getLocationList());
+        assertEquals(compareLib, lib.getLocationList());
         assertEquals(compareRequest, Library.getAddLocationRequests());
         //expected outcome
-        admin.approveAddRequest(location2);
+        admin.approveAddRequest(location2, lib);
         compareLib.add(location2);
         compareRequest.remove(location2);
-        assertEquals(compareLib, admin.getLocationList());
+        assertEquals(compareLib, lib.getLocationList());
         assertEquals(compareRequest, Library.getAddLocationRequests());
-        admin.approveAddRequest(location3);
+        admin.approveAddRequest(location3, lib);
         compareLib.add(location3);
         compareRequest.remove(location3);
-        assertEquals(compareLib, admin.getLocationList());
+        assertEquals(compareLib, lib.getLocationList());
         assertEquals(compareRequest, Library.getAddLocationRequests());
     }
 
@@ -61,6 +62,7 @@ public class AdminTest {
     void approveRemovedLocationRequestTest(){
         Admin admin = new Admin("AdminUser", "password");
         Account a = new Account("Happy", "s@s.com", "party123");
+        Library lib = new Library();
 
         Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
         Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
@@ -69,9 +71,9 @@ public class AdminTest {
         ArrayList<Location> compareLib = new ArrayList<>();
         ArrayList<Location> compareRequest = new ArrayList<>();
 
-        admin.add(location1);
-        admin.add(location2);
-        admin.add(location3);
+        lib.addLocation(location1);
+        lib.addLocation(location2);
+        lib.addLocation(location3);
         compareLib.add(location1);
         compareLib.add(location2);
         compareLib.add(location3);
@@ -81,18 +83,18 @@ public class AdminTest {
         compareRequest.add(location3);
         
         //deafult list
-        assertEquals(compareLib, admin.getLocationList());
+        assertEquals(compareLib, lib.getLocationList());
         assertEquals(compareRequest, Library.getRemoveLocationRequests());
         //expected outcome
-        admin.approveRemoveRequest(location2);
+        admin.approveRemoveRequest(location2, lib);
         compareLib.remove(location2);
         compareRequest.remove(location2);
-        assertEquals(compareLib, admin.getLocationList());
+        assertEquals(compareLib, lib.getLocationList());
         assertEquals(compareRequest, Library.getRemoveLocationRequests());
-        admin.approveRemoveRequest(location3);
+        admin.approveRemoveRequest(location3, lib);
         compareLib.remove(location3);
         compareRequest.remove(location3);
-        assertEquals(compareLib, admin.getLocationList());
+        assertEquals(compareLib, lib.getLocationList());
         assertEquals(compareRequest, Library.getRemoveLocationRequests());
     }
 

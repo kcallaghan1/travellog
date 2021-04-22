@@ -1,6 +1,6 @@
 package edu.ithaca.dragon.traveltracker;
 
-public class Admin extends Library{
+public class Admin{
     private String username;
     private String password;
 
@@ -25,11 +25,11 @@ public class Admin extends Library{
     public void viewLocationRequests(String listname){
         if (listname.equals("add")){
             System.out.println("Locations to add requests:");
-            if(addLocationRequests.isEmpty())
+            if(Library.getAddLocationRequests().isEmpty())
                 System.out.println("");
             else{
-                for (int i = 0; i < addLocationRequests.size(); i++){
-                    System.out.println(addLocationRequests.get(i).getName() + ", " + addLocationRequests.get(i).getAddress());
+                for (int i = 0; i < Library.getAddLocationRequests().size(); i++){
+                    System.out.println(Library.getAddLocationRequests().get(i).getName() + ", " + Library.getAddLocationRequests().get(i).getAddress());
                 }
             }
         }
@@ -38,28 +38,28 @@ public class Admin extends Library{
             if(Library.removeLocationRequests.isEmpty())
                 System.out.println("");
             else{
-                for (int i = 0; i < removeLocationRequests.size(); i++){
-                    System.out.println(removeLocationRequests.get(i).getName() + ", " + removeLocationRequests.get(i).getAddress());
+                for (int i = 0; i < Library.getRemoveLocationRequests().size(); i++){
+                    System.out.println(Library.getRemoveLocationRequests().get(i).getName() + ", " + Library.getRemoveLocationRequests().get(i).getAddress());
                 }
             }
         }
     }
 
-    public void approveAddRequest(Location name){
-        locationList.add(name);
-        addLocationRequests.remove(name);
+    public void approveAddRequest(Location name, Library lib){
+        lib.addLocation(name);
+        Library.getAddLocationRequests().remove(name);
     }
 
-    public void approveRemoveRequest(Location name){
-        locationList.remove(name);
-        removeLocationRequests.remove(name);
+    public void approveRemoveRequest(Location name, Library lib){
+        lib.removeLocation(name.getName());
+        Library.getRemoveLocationRequests().remove(name);
     }
 
     public void denyAddRequest(Location name){
-        addLocationRequests.remove(name);
+        Library.getAddLocationRequests().remove(name);
     }
 
     public void denyRemoveRequest(Location name){
-        removeLocationRequests.remove(name);
+        Library.getRemoveLocationRequests().remove(name);
     }
 }
