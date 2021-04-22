@@ -82,18 +82,18 @@ public class AdminTest {
         
         //deafult list
         assertEquals(compareLib, admin.getLocationList());
-        assertEquals(compareRequest, Library.getAddLocationRequests());
+        assertEquals(compareRequest, Library.getRemoveLocationRequests());
         //expected outcome
         admin.approveRemoveRequest(location2);
         compareLib.remove(location2);
         compareRequest.remove(location2);
         assertEquals(compareLib, admin.getLocationList());
-        assertEquals(compareRequest, Library.getAddLocationRequests());
-        admin.approveAddRequest(location3);
+        assertEquals(compareRequest, Library.getRemoveLocationRequests());
+        admin.approveRemoveRequest(location3);
         compareLib.remove(location3);
         compareRequest.remove(location3);
         assertEquals(compareLib, admin.getLocationList());
-        assertEquals(compareRequest, Library.getAddLocationRequests());
+        assertEquals(compareRequest, Library.getRemoveLocationRequests());
     }
 
     public static void main(String[] args) {

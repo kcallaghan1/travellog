@@ -51,10 +51,15 @@ public class Admin extends Library{
     }
 
     public void approveRemoveRequest(Location name){
-        //TODO
+        locationList.remove(name);
+        removeLocationRequests.remove(name);
     }
 
     public void denyAddRequest(Location name){
+        //TODO
+    }
+
+    public void denyRemoveRequest(Location name){
         //TODO
     }
 }
