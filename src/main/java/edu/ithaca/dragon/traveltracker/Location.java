@@ -7,7 +7,8 @@ public class Location {
 
     private String name;
     private String address;
-    private ArrayList<Categories> categories;
+    private ArrayList<String> categories;
+    private int locationId;
 
     public Location(String name, String address){
         if (name.length() > 0){
@@ -21,12 +22,26 @@ public class Location {
         else throw new IllegalArgumentException("The address of this location has been left empty.");
     }
 
-    public Location(String name, String address, ArrayList<Categories> categories){
+    public Location(String name, String address, ArrayList<String> categories){
         if (name.length() > 0){
             if (address.length() > 0){
                 this.name = name;
                 this.address = address;
                 this.categories = categories;
+            }
+            else throw new IllegalArgumentException("The name for this location has been left empty.");
+        }
+        else throw new IllegalArgumentException("The address of this location has been left empty.");
+    }
+
+
+    public Location(String name, String address, ArrayList<String> categories, int locationId){
+        if (name.length() > 0){
+            if (address.length() > 0){
+                this.name = name;
+                this.address = address;
+                this.categories = categories;
+                this.locationId = locationId;
             }
             else throw new IllegalArgumentException("The name for this location has been left empty.");
         }
@@ -41,7 +56,11 @@ public class Location {
         return address;
     }
 
-    public List<Categories> getCategories(){
+    public int getLocationId(){
+        return locationId;
+    }
+
+    public List<String> getCategories(){
         return categories;
     }
 }
