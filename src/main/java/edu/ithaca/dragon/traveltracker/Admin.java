@@ -10,7 +10,7 @@ public class Admin {
             this.password = password;
         }
         else{
-            throw new IllegalArgumentException("Invalid email or username");
+            throw new IllegalArgumentException("Invalid username");
         }
     }
 
@@ -20,5 +20,9 @@ public class Admin {
             return true;
         }
         return false;
+    }
+
+    public void approveRequest(Location name){
+        Library.approveLocationRequest(name, "add");
     }
 }
