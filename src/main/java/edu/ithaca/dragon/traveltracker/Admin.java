@@ -56,10 +56,10 @@ public class Admin extends Library{
     }
 
     public void denyAddRequest(Location name){
-        //TODO
+        addLocationRequests.remove(name);
     }
 
     public void denyRemoveRequest(Location name){
-        //TODO
+        removeLocationRequests.remove(name);
     }
 }

@@ -96,6 +96,72 @@ public class AdminTest {
         assertEquals(compareRequest, Library.getRemoveLocationRequests());
     }
 
+    @Test
+    void denyAddLocationRequestTest(){
+        Admin admin = new Admin("AdminUser", "password");
+        Account a = new Account("Happy", "s@s.com", "party123");
+
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        ArrayList<Location> compare = new ArrayList<>();
+
+        a.requestAddLocation(location1);
+        a.requestAddLocation(location2);
+        a.requestAddLocation(location3);
+        compare.add(location1);
+        compare.add(location2);
+        compare.add(location3);
+        
+        //deafult list
+        assertEquals(compare, Library.getAddLocationRequests());
+        //expected outcome
+        admin.denyAddRequest(location1);
+        compare.remove(location1);
+        assertEquals(compare, Library.getAddLocationRequests());
+        //denying multiple locations
+        admin.denyAddRequest(location2);
+        compare.remove(location2);
+        admin.denyAddRequest(location3);
+        compare.remove(location3);
+        assertEquals(compare, Library.getAddLocationRequests());
+        assertEquals(compare, Library.getAddLocationRequests());
+    }
+
+    @Test
+    void denyRemoveLocationRequestTest(){
+        Admin admin = new Admin("AdminUser", "password");
+        Account a = new Account("Happy", "s@s.com", "party123");
+
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        ArrayList<Location> compare = new ArrayList<>();
+
+        a.requestRemoveLocation(location1);
+        a.requestRemoveLocation(location2);
+        a.requestRemoveLocation(location3);
+        compare.add(location1);
+        compare.add(location2);
+        compare.add(location3);
+        
+        //deafult list
+        assertEquals(compare, Library.getRemoveLocationRequests());
+        //expected outcome
+        admin.denyRemoveRequest(location1);
+        compare.remove(location1);
+        assertEquals(compare, Library.getRemoveLocationRequests());
+        //denying multiple locations
+        admin.denyRemoveRequest(location2);
+        compare.remove(location2);
+        admin.denyRemoveRequest(location3);
+        compare.remove(location3);
+        assertEquals(compare, Library.getRemoveLocationRequests());
+        assertEquals(compare, Library.getRemoveLocationRequests());
+    }
+
     public static void main(String[] args) {
         Admin admin = new Admin("AdminUser", "password");
         Account a = new Account("Happy", "s@s.com", "party123");
