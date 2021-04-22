@@ -1,6 +1,6 @@
 package edu.ithaca.dragon.traveltracker;
 
-public class Admin {
+public class Admin{
     private String username;
     private String password;
 
@@ -10,7 +10,7 @@ public class Admin {
             this.password = password;
         }
         else{
-            throw new IllegalArgumentException("Invalid email or username");
+            throw new IllegalArgumentException("Invalid username");
         }
     }
 
@@ -20,5 +20,46 @@ public class Admin {
             return true;
         }
         return false;
+    }
+
+    public void viewLocationRequests(String listname){
+        if (listname.equals("add")){
+            System.out.println("Locations to add requests:");
+            if(Library.getAddLocationRequests().isEmpty())
+                System.out.println("");
+            else{
+                for (int i = 0; i < Library.getAddLocationRequests().size(); i++){
+                    System.out.println(Library.getAddLocationRequests().get(i).getName() + ", " + Library.getAddLocationRequests().get(i).getAddress());
+                }
+            }
+        }
+        else if (listname.equals("remove")){
+            System.out.println("Locations to remove requests:");
+            if(Library.removeLocationRequests.isEmpty())
+                System.out.println("");
+            else{
+                for (int i = 0; i < Library.getRemoveLocationRequests().size(); i++){
+                    System.out.println(Library.getRemoveLocationRequests().get(i).getName() + ", " + Library.getRemoveLocationRequests().get(i).getAddress());
+                }
+            }
+        }
+    }
+
+    public void approveAddRequest(Location name, Library lib){
+        lib.addLocation(name);
+        Library.getAddLocationRequests().remove(name);
+    }
+
+    public void approveRemoveRequest(Location name, Library lib){
+        lib.removeLocation(name.getName());
+        Library.getRemoveLocationRequests().remove(name);
+    }
+
+    public void denyAddRequest(Location name){
+        Library.getAddLocationRequests().remove(name);
+    }
+
+    public void denyRemoveRequest(Location name){
+        Library.getRemoveLocationRequests().remove(name);
     }
 }
