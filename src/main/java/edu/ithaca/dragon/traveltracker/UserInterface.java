@@ -1,11 +1,12 @@
 package edu.ithaca.dragon.traveltracker;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
 
-    public static Account login(Library lib, Scanner sc){
+    public static Account login(Scanner sc){
         boolean loginSuccess = false;
         String userIn, passIn;
         Account acc = null;
@@ -31,22 +32,21 @@ public class UserInterface {
                 return null;
             }
             else {
-                for(int i = 0; i < lib.accountList.size(); i++){
-                    if(lib.accountList.get(i).getUsername().equals(userIn)){
-                        if(lib.accountList.get(i).getPassword().equals(passIn)){
-                            loginSuccess = true;
-                            acc = lib.accountList.get(i);
-                        }
+                acc = Database.findAccountByUsername(userIn);
+                if(acc != null){
+                    if(passIn.equals(acc.getPassword())){
+                        loginSuccess = true;
+                        break;
                     }
                 }
-                System.out.println("Username or password are invalid.\n");
             }
+            System.out.println("Username or password are invalid.\n");
         }
         return acc;
     }    
     
     
-    public static Account register(Library lib, Scanner sc){
+    public static Account register(Scanner sc){
         boolean userDone = false, emailDone = false, passDone = false;
         String username = "", email = "", password = "";
 
@@ -103,19 +103,22 @@ public class UserInterface {
             }
         }
         Account acc = new Account(username, email, password);
-        lib.addAccount(acc);
+        Database.addAccount(acc);
         return acc;
     }
 
 
-    public static void openTravelLogs(Account currentAccount, Library lib, Scanner sc){
+    public static void openTravelLogs(Account currentAccount, Scanner sc) throws SQLException {
 
         boolean open = true;
-        while(open){
-            System.out.println("Select a travel log, 'b' for back, or 'q' to quit.");
 
-            for(int i = 0; i < currentAccount.getTravelLogs().size(); i++){
-                System.out.println((i+1) + ". " + currentAccount.getLogAt(i).getTitle());
+
+        while(open){
+            ArrayList<TravelLog> logs = Database.getTravelLogsByAccount(currentAccount);
+            System.out.println("Select a travel log, 'n' to create new log, 'r' to remove a log, 'b' for back, or 'q' to quit.");
+
+            for(int i = 0; i < logs.size(); i++){
+                System.out.println((i+1) + ". " + logs.get(i).getTitle());
             }
 
             String stringIn = sc.nextLine();
@@ -127,8 +130,16 @@ public class UserInterface {
                 sc.close();
                 System.exit(0);
             }
-            else if(Integer.parseInt(stringIn) <= currentAccount.getTravelLogs().size()){
-                openLog(currentAccount.getLogAt(Integer.parseInt(stringIn) - 1), currentAccount, sc);
+            else if(stringIn.equalsIgnoreCase("n")){
+                makeNewLog(currentAccount, sc);
+            }
+            else if(stringIn.equalsIgnoreCase("r")){
+                System.out.println("Select a log to remove:");
+                stringIn = sc.nextLine();
+                Database.removeTravelLog(Integer.parseInt(stringIn));
+            }
+            else if(Integer.parseInt(stringIn) <= logs.size()){
+                openLog(logs.get(Integer.parseInt(stringIn) - 1), currentAccount, sc);
             }
             else{
                 System.out.println("Please enter a valid input!");
@@ -137,19 +148,66 @@ public class UserInterface {
     }
 
 
+    private static void makeNewLog(Account currentAccount, Scanner sc) {
+        System.out.println("Enter a name for travel log:");
+        String nameIn = sc.nextLine();
+        System.out.println("Enter a description for the log:");
+        String descriptionIn = sc.nextLine();
+        TravelLog log = new TravelLog(nameIn, descriptionIn);
+        Database.addTravelLog(log, currentAccount);
+    }
+
+
     public static void openLog(TravelLog log, Account currentAccount, Scanner sc){
         boolean open = true;
         while(open){
             System.out.println("Title: " + log.getTitle());
             System.out.println("Description: " + log.getDescription());
-            for(int i = 0; i < log.getPlaces().size(); i++){
-                System.out.println(i+1 + ". " + log.getPlaces().get(i).getName());
+            ArrayList<Location> locations = Database.getLocationsFromTravelLog(log);
+            for(int i = 0; i < locations.size(); i++){
+                System.out.println(i+1 + ". " + locations.get(i).getName());
             }
             System.out.println("'a' to add, 'r' to remove, 'b' to go back, or 'q' to quit.");
 
-            /**
-             * TODO: Add functionality for editing log.
-             */
+            String stringIn = sc.nextLine();
+            if(stringIn.equalsIgnoreCase("b")){
+                open = false;
+                return;
+            }
+            else if(stringIn.equalsIgnoreCase("q")){
+                sc.close();
+                System.exit(0);
+            }
+            else if(stringIn.equalsIgnoreCase("r")){
+                System.out.println("Select a location to remove or 'b' to go back.\n");
+                stringIn = sc.nextLine();
+                if(stringIn.equalsIgnoreCase("b")){
+                    return;
+                }
+                else if(Integer.parseInt(stringIn) < 0 || Integer.parseInt(stringIn) > locations.size()){
+                    System.out.println("Please select a valid location!");
+                }
+                else{
+                    Location locationToRemove = locations.get(Integer.parseInt(stringIn) - 1);
+                    Database.removeLocationFromTravelLog(locationToRemove.getLocationId(), log.getLogId());
+                }
+            }
+            else if(stringIn.equalsIgnoreCase("a")){
+                System.out.println("Select a location to add: ");
+                try {
+                    ArrayList<Location> allLocations = Database.getLocations();
+                    for(Location loc : allLocations){
+                        if(!locations.contains(loc)){
+                            System.out.println(loc.getLocationId() + ". " + loc.getName() + ", " + loc.getAddress());
+                        }
+                    }
+                    stringIn = sc.nextLine();
+                    Database.addLocationToTravelLog(Integer.parseInt(stringIn), log.getLogId());
+                } catch (SQLException e) {
+                }
+                
+            }
+
         }
     }
 
@@ -160,17 +218,30 @@ public class UserInterface {
 
     public static void changePassword(Account currentAccount, Scanner sc){
 
+        System.out.println("Current password: \n");
+        String oldPass = sc.nextLine();
+        System.out.println("New password: \n");
+        String newPass = sc.nextLine();
+        System.out.println("Confirm new password: \n");
+        String confNewPass = sc.nextLine();
+
+        if(currentAccount.resetPassword(newPass, confNewPass, oldPass)){
+            Database.updatePassword(currentAccount);
+        }
+        else{
+            System.out.println("Current password is incorrect or new passwords do not match.\n");
+        }
     }
 
 
 
-    public static void home(Account currentAccount, Library lib, Scanner sc){
+    public static void home(Account currentAccount, Scanner sc){
         boolean open = true;
         while(open){
             System.out.println("Welcome " + currentAccount.getUsername() + "!");
             System.out.println("Please select an option: ");
             System.out.println("1. View Travel Logs");
-            System.out.println("2. View Favorite Locations");
+            System.out.println("2. View Favorite Locations"); // TODO
             System.out.println("3. Search for a Location"); // TODO
             System.out.println("4. Change password");
             System.out.println("5. Logout");
@@ -180,16 +251,22 @@ public class UserInterface {
             int userInput = Integer.parseInt(sc.nextLine());
             switch(userInput){
                 case 1:
-                    openTravelLogs(currentAccount, lib, sc);
+                try {
+                    openTravelLogs(currentAccount, sc);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                     break;
                 case 2:
                     openFavorites(currentAccount, sc);
+                    System.out.println("Favorite Locations are not yet available");
                     break;
                 case 3:
-                    System.out.println("Search is not yet available");
+                    searchLocation(currentAccount, sc);
                     break;
                 case 4:
                     changePassword(currentAccount, sc);
+                    break;
                 case 5:
                     open = false;
                     return;
@@ -201,11 +278,40 @@ public class UserInterface {
         }
     }
     
+    private static void searchLocation(Account currentAccount, Scanner sc) {
+        System.out.println("Enter location name or press 'c' to see categories:");
+        String stringIn = sc.nextLine();
+        if(stringIn.equalsIgnoreCase("c")){
+            ArrayList<String> categories = Database.getCategories();
+            for(int i = 0; i < categories.size(); i++){
+                System.out.println(i+1 + ". " + categories.get(i));
+            }
+            int categoryNum = Integer.parseInt(sc.nextLine());
+            try {
+                ArrayList<Location> locations = Database.findLocationByCategory(categories.get(categoryNum-1));
+                for(int i = 0; i < locations.size(); i++){
+                    System.out.println(i+1 + ". " + locations.get(i).getName() + ", " + locations.get(i).getAddress());
+                }
+            } catch (SQLException e) {
+            }
+        }
+        else{
+            String locationName = sc.nextLine();
+            try {
+                ArrayList<Location> locations = Database.findLocationByName(locationName);
+                for(int i = 0; i < locations.size(); i++){
+                    System.out.println(i+1 + ". " + locations.get(i).getName() + ", " + locations.get(i).getAddress());
+                }
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+
     public static void main(String[] args){
         
         Scanner sc = new Scanner(System.in);
         boolean open = true, loggedIn = false;
-        Library lib = new Library();
 
         System.out.println("Welcome to Travel Tracker!");
 
@@ -217,13 +323,13 @@ public class UserInterface {
                 String response = sc.nextLine();
 
                 if(response.equalsIgnoreCase("l")){
-                    currentAccount = login(lib, sc);
+                    currentAccount = login(sc);
                     if(currentAccount != null){
                         loggedIn = true;
                     }
                 }
                 else if(response.equalsIgnoreCase("r")){
-                    currentAccount = register(lib, sc);
+                    currentAccount = register(sc);
                     if(currentAccount != null){
                         loggedIn = true;
                     }
@@ -238,7 +344,8 @@ public class UserInterface {
                 }
             }
 
-            home(currentAccount, lib, sc);
+            home(currentAccount, sc);
+            loggedIn = false;
         }
     }
 }

@@ -7,13 +7,31 @@ public class TravelLog {
     
     private String title;
     private String description;
+    private int logId;
     private List<Location> places;
+
 
     public TravelLog(String title, String description){
         if (title.length() > 0){
             if (description.length() > 0){
                 this.title = title;
                 this.description = description;
+                this.logId = -1;
+                places = new ArrayList<>();
+            }
+            else throw new IllegalArgumentException("The description for this travel log has been left empty.");
+        }
+        else throw new IllegalArgumentException("The title of this travel log has been left empty.");
+    }
+
+
+
+    public TravelLog(String title, String description, int logId){
+        if (title.length() > 0){
+            if (description.length() > 0){
+                this.title = title;
+                this.description = description;
+                this.logId = logId;
                 places = new ArrayList<>();
             }
             else throw new IllegalArgumentException("The description for this travel log has been left empty.");
@@ -33,6 +51,10 @@ public class TravelLog {
         return places;
     }
 
+    public int getLogId(){
+        return logId;
+    }
+
     public void addDestination(Location name) throws IllegalArgumentException{
         boolean sameLocation = false;
         for (int i = 0; i < places.size(); i++){
@@ -44,6 +66,11 @@ public class TravelLog {
             throw new IllegalArgumentException("This location is already in the travel log.");
         else
             places.add(name);
+    }
+
+
+    public void removeLocation(int idx){
+        places.remove(idx);
     }
 
 }
