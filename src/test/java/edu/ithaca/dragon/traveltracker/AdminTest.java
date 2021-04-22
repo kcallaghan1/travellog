@@ -22,6 +22,41 @@ public class AdminTest {
         assertTrue(admin.verifyAccount("AdminUser", "password"));
     }
 
+    @Test
+    void approveAddLocationRequestTest(){
+        Admin admin = new Admin("AdminUser", "password");
+        Account a = new Account("Happy", "s@s.com", "party123");
+        Library lib = new Library();
+
+        Location location1 = new Location("Waffle Frolic", "146 E State St, Ithaca, NY 14850");
+        Location location2 = new Location("Starbucks", "130 E Seneca St, Ithaca, NY 14850");
+        Location location3 = new Location("New Delhi Diamond's", "106 W Green St, Ithaca, NY 14850");
+
+        ArrayList<Location> compareLib = new ArrayList<>();
+        ArrayList<Location> compareRequest = new ArrayList<>();
+
+        lib.add(location1);
+        compareLib.add(location1);
+        a.requestAddLocation(location2);
+        a.requestAddLocation(location3);
+        compareRequest.add(location2);
+        compareRequest.add(location3);
+        
+        //deafult list
+        assertEquals(compareLib, lib.getLocationList());
+        assertEquals(compareRequest, Library.getAddLocationRequests());
+        //expected outcome
+        admin.approveAddRequest(location2);
+        compareLib.add(location2);
+        compareRequest.remove(location2);
+        assertEquals(compareLib, lib.getLocationList());
+        assertEquals(compareRequest, Library.getAddLocationRequests());
+        admin.approveAddRequest(location3);
+        compareLib.add(location3);
+        assertEquals(compareLib, lib.getLocationList());
+        assertEquals(compareRequest, Library.getAddLocationRequests());
+    }
+
     public static void main(String[] args) {
         Admin admin = new Admin("AdminUser", "password");
         Account a = new Account("Happy", "s@s.com", "party123");

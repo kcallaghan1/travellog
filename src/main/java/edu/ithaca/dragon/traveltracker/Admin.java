@@ -45,7 +45,15 @@ public class Admin {
         }
     }
 
-    public void approveRequest(Location name){
+    public void approveAddRequest(Location name){
         Library.approveLocationRequest(name, "add");
+    }
+
+    public void approveRemoveRequest(Location name){
+        Library.approveLocationRequest(name, "remove");
+    }
+
+    public void denyAddRequest(Location name){
+        Library.denyLocationRequest(name, "add");
     }
 }

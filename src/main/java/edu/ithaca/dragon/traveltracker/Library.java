@@ -84,6 +84,10 @@ public class Library {
         //TODO
     }
 
+    static void denyLocationRequest(Location name, String request){
+        //TODO
+    }
+
     Boolean isValid(String name){
         return true;
     }
