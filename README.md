@@ -32,3 +32,6 @@ your changes to the database.
     - [Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing) (click on 'Sprint 2 - Class Diagram' tab on the bottom)
     - [Review Agenda](https://docs.google.com/document/d/1XQOStZZfRXacwk9MZQLphKxcYgYMD51B5Mgd-ofE2Ec/edit?usp=sharing)
     - [Retrospective](https://docs.google.com/document/d/1fRtSQSrhL0Kdo3CSHVXXQ9r7uDCzBrIbZqU2GfFBR58/edit?usp=sharing)
+
+## Sprint 3
+* Goal: A working database that allows for additions of travel-logs and locations, with the ability to add favorites if time permits.
