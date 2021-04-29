@@ -493,12 +493,61 @@ public class DatabaseTest {
     void addAccountTest() throws SQLException {
         Account acc = new Account("cam", "cam@gmail.com", "cam123");
         addAccount(acc);
+
+        Connection con = connectToTest();
+
+        String sql = "SELECT * FROM accounts WHERE username LIKE 'cam'";
+        Statement statement = con.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        String username = result.getString("username");
+        String email = result.getString("email");
+        String password = result.getString("password");
+
         printAccounts();
+
+        /* Equivalence Testing */
+        assertEquals("cam", username);
+        assertEquals("cam@gmail.com", email);
+        assertEquals("cam123", password);
     }
 
     @Test
     void removeAccountTest() throws SQLException {
+        Account acc = new Account("cam", "cam@gmail.com", "cam123");
+        addAccount(acc);
+
+        Connection con = connectToTest();
+
+        //--BEFORE REMOVAL
+        System.out.println("\n--BEFORE--\n");
+
+        String sql = "SELECT COUNT(*) as count FROM accounts WHERE username LIKE 'cam'";
+        Statement statement = con.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        int count = result.getInt("count");
+
+        assertEquals(1, count); //Equivalence test, making sure that the value is present before removal
+
+        printAccounts();
+
+        con.close();
+
+        //--AFTER REMOVAL
+        System.out.println("\n--After--\n");
+
+        con = connectToTest();
         removeAccountByUsername("cam");
+
+        sql = "SELECT COUNT(*) as count FROM accounts WHERE username LIKE 'cam'";
+        statement = con.createStatement();
+        result = statement.executeQuery(sql);
+
+        count = result.getInt("count");
+
+        assertEquals(0, count); //Equivalence test, making sure that there are no results after removal
+
         printAccounts();
     }
 
