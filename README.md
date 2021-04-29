@@ -36,3 +36,4 @@ your changes to the database.
 
 ## Sprint 3
 * Goal: A working database that allows for additions of travel-logs and locations, with the ability to add favorites if time permits.
+    - [Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing)(click on 'Sprint3 - Class Diagram' tab on the bottom)
