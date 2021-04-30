@@ -510,6 +510,8 @@ public class DatabaseTest {
         assertEquals("cam", username);
         assertEquals("cam@gmail.com", email);
         assertEquals("cam123", password);
+
+        con.close();
     }
 
     @Test
@@ -549,10 +551,14 @@ public class DatabaseTest {
         assertEquals(0, count); //Equivalence test, making sure that there are no results after removal
 
         printAccounts();
+        con.close();
     }
 
     @Test
     void getAccountsTest() throws SQLException {
+        removeAccountByUsername("cam");
+        removeAccountByUsername("mike");
+
         ArrayList<Account> accounts = getAccounts();
         System.out.println("\n--Pre Addition--");
         for(Account cur : accounts){
@@ -596,20 +602,20 @@ public class DatabaseTest {
 
     @Test
     void updatePasswordTest() throws SQLException {
-        removeAccountByUsername("cam");
+        removeAccountByUsername("mike");
 
         //--BEFORE
-        Account acc = new Account("cam", "cam@gmail.com", "cam123");
+        Account acc = new Account("mike", "mike@gmail.com", "mike123");
         addAccount(acc);
-        acc = findAccountByUsername("cam"); //add account to database, then query it to a variable
-        assertEquals(acc.getPassword(), "cam123"); //Check that the password in the database is the original
+        acc = findAccountByUsername("mike"); //add account to database, then query it to a variable
+        assertEquals(acc.getPassword(), "mike123"); //Check that the password in the database is the original
 
         //--AFTER
 
-        acc.resetPassword("cam1234", "cam1234", "cam123");
+        acc.resetPassword("mike1234", "mike1234", "mike123");
         updatePassword(acc);
-        Account acc2 = findAccountByUsername("cam");
-        assertEquals(acc2.getPassword(), "cam1234"); //Check that the password in the database has been change
+        Account acc2 = findAccountByUsername("mike");
+        assertEquals(acc2.getPassword(), "mike1234"); //Check that the password in the database has been change
     }
 
     @Test
@@ -647,6 +653,7 @@ public class DatabaseTest {
         catch(SQLException se){
             System.out.println("Working, this means there was nothing to query");
         }
+        con.close();
     }
 
     @Test
@@ -709,6 +716,8 @@ public class DatabaseTest {
 
         assertEquals(0, count); //Making sure that nothing is returned when the log isn't there
 
+        con.close();
+
 
     }
 
@@ -742,5 +751,7 @@ public class DatabaseTest {
 
         count = result.getInt("count");
         assertEquals(1, count); //Make sure that there is one less travellog connected to the account
+
+        con.close();
     }
 }
