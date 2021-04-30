@@ -282,7 +282,7 @@ public class DatabaseTest {
     public static ArrayList<Location> getLocationsFromTravelLog(TravelLog log){
         ArrayList<Location> locations = new ArrayList<Location>();
 
-        String sql = "Select locationName, locationAddress, locationId from loggedLocations join locations using(locationId) where logId = ?";
+        String sql = "Select locationName, locationAddress, locationId from loggedLocations join locations using(locationId) where travelLogId = ?";
         try (Connection conn = connectToTest();
              PreparedStatement statement = conn.prepareStatement(sql)){
 
@@ -352,12 +352,12 @@ public class DatabaseTest {
     }
 
 
-    public static void removeTravelLog(int logId){
-        String sql = "DELETE FROM travelLogs where logId = ?";
+    public static void removeTravelLog(int travelLogId){
+        String sql = "DELETE FROM travelLogs where travelLogId = ?";
 
         try (Connection conn = connectToTest();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1,logId);
+            pstmt.setInt(1,travelLogId);
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -367,12 +367,12 @@ public class DatabaseTest {
     }
 
 
-    public static void addLocationToTravelLog(int locationId, int logId){
-        String sql = "insert into loggedLocations(logId, locationId) values(?,?)";
+    public static void addLocationToTravelLog(int locationId, int travelLogId){
+        String sql = "insert into loggedLocations(travelLogId, locationId) values(?,?)";
 
         try (Connection conn = connectToTest();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, logId);
+            pstmt.setInt(1, travelLogId);
             pstmt.setInt(2,locationId);
             pstmt.executeUpdate();
 
@@ -382,12 +382,12 @@ public class DatabaseTest {
     }
 
 
-    public static void removeLocationFromTravelLog(int locationId, int logId){
-        String sql = "DELETE FROM loggedLocations where (logId = ? and locationId = ?)";
+    public static void removeLocationFromTravelLog(int locationId, int travelLogId){
+        String sql = "DELETE FROM loggedLocations where (travelLogId = ? and locationId = ?)";
 
         try (Connection conn = connectToTest();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, logId);
+            pstmt.setInt(1, travelLogId);
             pstmt.setInt(2,locationId);
             pstmt.executeUpdate();
 
@@ -400,7 +400,7 @@ public class DatabaseTest {
     public static ArrayList<TravelLog> getTravelLogsByAccount(Account acc) throws SQLException {
         ArrayList<TravelLog> logs = new ArrayList<TravelLog>();
 
-        String sql = "Select logName, logDescription, logId from travelLogs where accountId = ?";
+        String sql = "Select logName, logDescription, travelLogId from travelLogs where accountId = ?";
         try (Connection conn = connectToTest();
              PreparedStatement statement = conn.prepareStatement(sql)){
 
@@ -413,9 +413,9 @@ public class DatabaseTest {
 
                 String logName = rs.getString("logName");
                 String logDescription = rs.getString("logDescription");
-                int logId = rs.getInt("logId");
+                int travelLogId = rs.getInt("travelLogId");
 
-                logs.add(new TravelLog(logName, logDescription, logId));
+                logs.add(new TravelLog(logName, logDescription, travelLogId));
             }
         }
         catch (SQLException e) {
@@ -424,7 +424,7 @@ public class DatabaseTest {
 
         return logs;
     }
-    
+
 
     public static Connection connectToTest(){
         Connection con = null;
@@ -554,34 +554,78 @@ public class DatabaseTest {
     @Test
     void getAccountsTest() throws SQLException {
         ArrayList<Account> accounts = getAccounts();
+        System.out.println("\n--Pre Addition--");
         for(Account cur : accounts){
             System.out.println(cur.getUsername());
             System.out.println(cur.getEmail());
         }
+        assertEquals(1, accounts.size()); //Equivalence testing for only one value in the accounts table
+        Account acc = new Account("cam", "cam@gmail.com", "cam123");
+
+        addAccount(acc);
+        accounts = getAccounts();
+        System.out.println("\n--Post Addition--");
+        for(Account cur : accounts){
+            System.out.println(cur.getUsername());
+            System.out.println(cur.getEmail());
+        }
+
+        assertEquals(2, accounts.size()); //Equivalence testing for two values in the accounts table
+
+        removeAccountByUsername("cam");
+        System.out.println("\n--Post Removal--");
+        accounts = getAccounts();
+        for(Account cur : accounts){
+            System.out.println(cur.getUsername());
+            System.out.println(cur.getEmail());
+        }
+        assertEquals(1, accounts.size()); //Making sure it works pre/post add/removal
     }
 
     @Test
     void findAccountByUsernameTest() throws SQLException {
         Account acc = new Account("admin", "admin@gmail.com", "admin123");
         Account returned = findAccountByUsername("admin");
-        assertEquals(acc.getUsername(), returned.getUsername());
-        assertEquals(acc.getEmail(), returned.getEmail());
-        assertEquals(acc.getPassword(), returned.getPassword());
+        assertEquals(acc.getUsername(), returned.getUsername()); //Check to make sure we got the right username
+        assertEquals(acc.getEmail(), returned.getEmail());  //Check to make sure we got the right email
+        assertEquals(acc.getPassword(), returned.getPassword()); //Check to make sure we got the right password
+
+        returned = findAccountByUsername("Bananas");
+        assertEquals(null, returned);  //Make sure null is returned when there are no results
     }
 
     @Test
     void updatePasswordTest() throws SQLException {
-        Account acc = findAccountByUsername("cam");
+        removeAccountByUsername("cam");
+
+        //--BEFORE
+        Account acc = new Account("cam", "cam@gmail.com", "cam123");
+        addAccount(acc);
+        acc = findAccountByUsername("cam"); //add account to database, then query it to a variable
+        assertEquals(acc.getPassword(), "cam123"); //Check that the password in the database is the original
+
+        //--AFTER
+
         acc.resetPassword("cam1234", "cam1234", "cam123");
         updatePassword(acc);
         Account acc2 = findAccountByUsername("cam");
-        assertEquals(acc2.getPassword(), "cam1234");
+        assertEquals(acc2.getPassword(), "cam1234"); //Check that the password in the database has been change
     }
 
     @Test
     void addLocationTest() throws SQLException{
-        Location loc = new Location("removeTest", "123 remove test");
+        removeLocation("addTest");
+
+        //--Before
+        Location loc = new Location("addTest", "123 add test");
+        ArrayList<Location> locations = findLocationByName("addTest");
+        assertEquals(0, locations.size()); //Making sure that there isn't a location by this name
+
+        //--After
         addLocation(loc);
+        locations = findLocationByName("addTest");
+        assertEquals(1, locations.size());  //Making sure that the location has been added
+
     }
 
     @Test
@@ -603,57 +647,100 @@ public class DatabaseTest {
         catch(SQLException se){
             System.out.println("Working, this means there was nothing to query");
         }
-
     }
 
     @Test
     void findLocationByNameTest() throws SQLException{
+        removeLocation("queryTest");
         ArrayList<Location> filteredLocations = new ArrayList<>();
-        filteredLocations = findLocationByName("T");
-        for(int i = 0; i < filteredLocations.size() ; i++)
-        {
-            System.out.println(filteredLocations.get(i).getName());
-        }
+
+        //--Query with nothing
+        filteredLocations = findLocationByName("query");
+        Location loc = new Location("queryTest", "123 QueryTest");
+        assertEquals(0, filteredLocations.size()); //Be sure nothing is returned when location isn't found
+
+
+        //Query with location added
+        addLocation(loc);
+        filteredLocations = findLocationByName("query");
+        assertEquals(1, filteredLocations.size()); //Check that the location can be found
+
     }
 
     @Test
     void findLocationByCategoryTest() throws SQLException{
         ArrayList<Location> filteredLocations = new ArrayList<>();
-        System.out.println("Search String: 'Restaurant'");
+
         filteredLocations = findLocationByCategory("Restaurant");
-        for(int i = 0; i < filteredLocations.size() ; i++)
-        {
-            System.out.println(filteredLocations.get(i).getName());
-        }
+        assertEquals(2, filteredLocations.size()); //There are two locations that fit inside this category
+
+        filteredLocations = findLocationByCategory("Fast Food");
+        assertEquals(1, filteredLocations.size()); //There is only one location that fits this category
+
+        filteredLocations = findLocationByCategory("fnjksakjfnds");
+        assertEquals(0, filteredLocations.size()); // There are no locations of this category
     }
 
 
     @Test
     void addLocationToTravelLogTest() throws SQLException {
-        Location loc = findLocationByName("Madison Square Garden").get(0);
-        System.out.println(loc.getLocationId() + ". " + loc.getName() + ", " + loc.getAddress());
+        Location loc = findLocationByName("Taco Town").get(0);
         ArrayList<Location> locations = getLoggedLocations();
-        for(Location cur : locations){
-            System.out.println(cur.getLocationId() + ". " + cur.getName() + ", " + cur.getAddress());
-        }
         addLocationToTravelLog(loc.getLocationId(), 1);
-        for(Location cur : locations){
-            System.out.println(cur.getLocationId() + ". " + cur.getName() + ", " + cur.getAddress());
-        }
+
+        Connection con = connectToTest();
+
+        String sql = "SELECT COUNT(*) as count FROM loggedLocations WHERE travelLogId==1";
+        Statement statement = con.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        int count = result.getInt("count");
+
+        assertEquals(2, count); //Making sure that the appropriate amount of locations are in the log
+        con.close();
+
+        con = connectToTest();
+
+        sql = "SELECT COUNT(*) as count FROM loggedLocations WHERE travelLogId==1323";
+        statement = con.createStatement();
+        result = statement.executeQuery(sql);
+
+        count = result.getInt("count");
+
+        assertEquals(0, count); //Making sure that nothing is returned when the log isn't there
+
+
     }
 
 
     @Test
-    void removeLocationFromTravelLogTest() {
-        ArrayList<Location> loggedLocations = getLoggedLocations();
-        TravelLog log = new TravelLog("New York", "New York", 1);
-        for(Location loc : loggedLocations){
-            System.out.println(loc.getLocationId() + ". " + loc.getName() + ", " + loc.getAddress());
-        }
-        removeLocationFromTravelLog(2, 1);
-        loggedLocations = getLocationsFromTravelLog(log);
-        for(Location loc : loggedLocations){
-            System.out.println(loc.getLocationId() + ". " + loc.getName() + ", " + loc.getAddress());
-        }
+    void removeLocationFromTravelLogTest() throws SQLException {
+
+        //Add the location to the travelLog
+        Location loc = findLocationByName("Taco Town").get(0);
+        ArrayList<Location> locations = getLoggedLocations();
+        addLocationToTravelLog(loc.getLocationId(), 1);
+
+        Connection con = connectToTest();
+
+        String sql = "SELECT COUNT(*) as count FROM loggedLocations WHERE travelLogId==1";
+        Statement statement = con.createStatement();
+        ResultSet result = statement.executeQuery(sql);
+
+        int count = result.getInt("count");
+
+        assertEquals(2, count); //Making sure that the appropriate amount of locations are in the log
+        con.close();
+
+        //Remove the location from the travellog
+        removeLocationFromTravelLog(loc.getLocationId(), 1);
+        con = connectToTest();
+
+        sql = "SELECT COUNT(*) as count FROM loggedLocations WHERE travelLogId==1";
+        statement = con.createStatement();
+        result = statement.executeQuery(sql);
+
+        count = result.getInt("count");
+        assertEquals(1, count); //Make sure that there is one less travellog connected to the account
     }
 }

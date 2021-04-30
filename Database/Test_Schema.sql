@@ -47,7 +47,8 @@ CREATE TABLE loggedLocations(
 	travelLogId INTEGER NOT NULL,
 	locationId INTEGER NOT NULL,
 	FOREIGN KEY(travelLogId) REFERENCES travelLogs,
-	FOREIGN KEY(locationId) REFERENCES locations
+	FOREIGN KEY(locationId) REFERENCES locations,
+	UNIQUE(travelLogId, locationId)
 );
 
 /*
@@ -149,3 +150,4 @@ VALUES(1, 2);
 /* Add picture to a location */
 INSERT INTO pictures(accountId, locationId, picturePath)
 VALUES(1, 1, "../src/images/waffle_frolic.jpg");
+
