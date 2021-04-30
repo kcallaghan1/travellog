@@ -11,14 +11,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Database {
+    public String dbPath;
 
-    public static Connection connect(){
+    public Database(String databasePath){
+        this.dbPath = databasePath;
+    }
+
+    public Connection connect(){
         Connection con = null;
         try {
             Class.forName("org.sqlite.JDBC");
             SQLiteConfig config = new SQLiteConfig();
             config.enforceForeignKeys(true);
-            con = DriverManager.getConnection("jdbc:sqlite:Database/TravelTracker.db", config.toProperties());
+            con = DriverManager.getConnection(dbPath, config.toProperties());
             //System.out.println("Connected To Database");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e+"");
@@ -26,7 +31,7 @@ public class Database {
         return con;
     }
 
-    public static void addAccount(Account acc){
+    public void addAccount(Account acc){
         String sql = "INSERT INTO accounts(email,username,password,permissions) VALUES(?,?,?,?)";
 
         try (Connection conn = connect();
@@ -42,7 +47,7 @@ public class Database {
     }
 
 
-    public static void updatePassword(Account acc){
+    public  void updatePassword(Account acc){
         String sql = "UPDATE accounts SET password = ?" + " WHERE accountId = ?";
 
         try (Connection conn = connect();
@@ -59,7 +64,7 @@ public class Database {
     }
 
 
-    public static void removeAccountByUsername(String username){
+    public  void removeAccountByUsername(String username){
         String sql = "DELETE FROM accounts WHERE username = ?";
 
         try (Connection conn = connect();
@@ -76,7 +81,7 @@ public class Database {
     }
 
 
-    public static void printAccounts(){
+    public  void printAccounts(){
         String sql = "Select * from accounts";
         try (Connection conn = connect();
              Statement stmt  = conn.createStatement();
@@ -96,7 +101,7 @@ public class Database {
     }
 
 
-    public static ArrayList<Account> getAccounts(){
+    public  ArrayList<Account> getAccounts(){
         String sql = "Select * from accounts";
         ArrayList<Account> accounts = new ArrayList<Account>();
         try (Connection conn = connect();
@@ -121,7 +126,7 @@ public class Database {
     }
 
 
-    public static Account findAccountByUsername(String username) {
+    public  Account findAccountByUsername(String username) {
         String sql = "SELECT * FROM accounts WHERE username = ?";
 
         try(Connection conn = connect();
@@ -142,7 +147,7 @@ public class Database {
     }
 
 
-    public static ArrayList<String> getCategories(){
+    public  ArrayList<String> getCategories(){
         String sql = "Select * from categories";
         ArrayList<String> categories = new ArrayList<String>();
         try (Connection conn = connect();
@@ -165,7 +170,7 @@ public class Database {
 
 
 
-    public static void addLocation(Location loc){
+    public  void addLocation(Location loc){
         String sql = "INSERT INTO locations(locationName, locationAddress) VALUES(?,?)";
 
         try (Connection conn = connect();
@@ -178,7 +183,7 @@ public class Database {
         }
     }
 
-    public static void removeLocation(String loc){
+    public  void removeLocation(String loc){
         String sql = "DELETE FROM locations WHERE locationName = ?";
 
         try (Connection conn = connect();
@@ -192,7 +197,7 @@ public class Database {
         }
     }
 
-    public static ArrayList<Location> findLocationByName(String locationName) throws SQLException {
+    public  ArrayList<Location> findLocationByName(String locationName) throws SQLException {
         ArrayList<Location> filtered_locations = new ArrayList<Location>();
         Connection con = connect();
 
@@ -215,7 +220,7 @@ public class Database {
         return filtered_locations;
     }
 
-    public static ArrayList<Location> findLocationByCategory(String category) throws SQLException {
+    public  ArrayList<Location> findLocationByCategory(String category) throws SQLException {
         ArrayList<Location> filtered_locations = new ArrayList<Location>();
         Connection con = connect();
 
@@ -244,7 +249,7 @@ public class Database {
     }
 
 
-    public static ArrayList<String> getCategoriesByLocation(int locationId) {
+    public  ArrayList<String> getCategoriesByLocation(int locationId) {
         ArrayList<String> categories = new ArrayList<String>();
         String sql = "Select * from locationToCategory join categories using(categoryId) where locationId = ?";
 
@@ -270,7 +275,7 @@ public class Database {
 
 
 
-    public static ArrayList<Location> getLocations() throws SQLException {
+    public  ArrayList<Location> getLocations() throws SQLException {
         ArrayList<Location> locations = new ArrayList<Location>();
         String sql = "Select * from locations";
         try (Connection conn = connect();
@@ -295,7 +300,7 @@ public class Database {
     }
 
 
-    public static ArrayList<Location> getLocationsFromTravelLog(TravelLog log){
+    public  ArrayList<Location> getLocationsFromTravelLog(TravelLog log){
         ArrayList<Location> locations = new ArrayList<Location>();
 
         String sql = "Select locationName, locationAddress, locationId from loggedLocations join locations using(locationId) where travelLogId = ?";
@@ -328,7 +333,7 @@ public class Database {
 
 
 
-    public static void addTravelLog(TravelLog log, Account acc){
+    public  void addTravelLog(TravelLog log, Account acc){
         String sql = "INSERT INTO travelLogs(accountId, logName, logDescription) VALUES(?,?,?)";
 
         try (Connection conn = connect();
@@ -343,7 +348,7 @@ public class Database {
         }
     }
 
-    public static ArrayList<Location> getLoggedLocations(){
+    public  ArrayList<Location> getLoggedLocations(){
         ArrayList<Location> locations = new ArrayList<Location>();
         String sql = "Select * from loggedLocations join Locations using(locationId)";
         try (Connection conn = connect();
@@ -368,7 +373,7 @@ public class Database {
     }
 
 
-    public static void removeTravelLog(int travelLogId){
+    public  void removeTravelLog(int travelLogId){
         String sql = "DELETE FROM travelLogs where travelLogId = ?";
 
         try (Connection conn = connect();
@@ -383,7 +388,7 @@ public class Database {
     }
 
 
-    public static void addLocationToTravelLog(int locationId, int travelLogId){
+    public  void addLocationToTravelLog(int locationId, int travelLogId){
         String sql = "insert into loggedLocations(travelLogId, locationId) values(?,?)";
 
         try (Connection conn = connect();
@@ -398,7 +403,7 @@ public class Database {
     }
 
 
-    public static void removeLocationFromTravelLog(int locationId, int travelLogId){
+    public  void removeLocationFromTravelLog(int locationId, int travelLogId){
         String sql = "DELETE FROM loggedLocations where (travelLogId = ? and locationId = ?)";
 
         try (Connection conn = connect();
@@ -413,7 +418,7 @@ public class Database {
     }
 
 
-    public static ArrayList<TravelLog> getTravelLogsByAccount(Account acc) throws SQLException {
+    public  ArrayList<TravelLog> getTravelLogsByAccount(Account acc) throws SQLException {
         ArrayList<TravelLog> logs = new ArrayList<TravelLog>();
 
         String sql = "Select logName, logDescription, travelLogId from travelLogs where accountId = ?";
