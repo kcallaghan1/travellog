@@ -445,4 +445,18 @@ public class Database {
 
         return logs;
     }
+
+    public void addPicture(String picPath, Account acc, int locationId){
+        String sql = "insert into pictures(accountId, locationId, picturePath) values(?,?,?)";
+
+        try(Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, acc.getAccountId());
+                pstmt.setInt(2, locationId);
+                pstmt.setString(3, picPath);
+                pstmt.executeUpdate();
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
