@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class UserInterface {
 
+    public static Database Database = new Database("jdbc:sqlite:Database/TravelTracker.db");
+
     public static Account login(Scanner sc){
         boolean loginSuccess = false;
         String userIn, passIn;

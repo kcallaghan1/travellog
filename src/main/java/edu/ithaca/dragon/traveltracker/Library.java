@@ -41,7 +41,7 @@ public class Library {
     }
 
     void addLocation(String name, String address, ArrayList<Categories> categories){
-        locationList.add(new Location(name, address, categories));
+        //locationList.add(new Location(name, address, categories));
     }
 
     void addLocation(Location loc){
