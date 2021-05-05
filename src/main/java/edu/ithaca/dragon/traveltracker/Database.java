@@ -531,4 +531,58 @@ public class Database {
         con.close();
         return locations.get(0);
     }
+
+
+    public void addFavoriteLocation(Account acc, Location loc) {
+        String sql = "INSERT INTO favorites(accountId, locationId) VALUES(?,?)";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, acc.getAccountId());
+            pstmt.setInt(2, loc.getLocationId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public void removeFavoriteLocation(int locationId){
+        String sql = "DELETE FROM favorites WHERE locationId = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, locationId);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public ArrayList<Location> getFavoriteLocations(){
+        String sql = "Select * from favorites join locations using (locationId)";
+        ArrayList<Location> favoriteLocations = new ArrayList<Location>();
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+
+                int locationId = rs.getInt("locationId");
+                String locationName = rs.getString("locationName");
+                String locationAddress = rs.getString("locationAddress");
+                ArrayList<String> categories = getCategoriesByLocation(locationId);
+
+                favoriteLocations.add(new Location(locationName, locationAddress, categories, locationId));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return favoriteLocations;
+    }
 }
