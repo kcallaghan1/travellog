@@ -459,4 +459,76 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public void addLocationRequest(Location loc){
+        String sql = "INSERT INTO requestedLocations(locationName, locationAddress) VALUES(?,?)";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, loc.getName());
+            pstmt.setString(2, loc.getAddress());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removeLocationRequest(Location loc){
+        String sql = "DELETE FROM requestedLocations where locationName = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, loc.getName());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public  ArrayList<Location> getRequestedLocations() throws SQLException {
+        ArrayList<Location> locations = new ArrayList<Location>();
+        String sql = "Select * from requestedLocations";
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+
+                String name = rs.getString("locationName");
+                String address = rs.getString("locationAddress");
+
+                locations.add(new Location(name, address));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return locations;
+    }
+
+
+    public  Location findRequestedLocationByName(String locationName) throws SQLException {
+        Connection con = connect();
+
+        ArrayList<Location> locations = new ArrayList<Location>();
+
+        String sql = "SELECT * FROM requestedLocations WHERE locationName LIKE ?";
+
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setString(1, "%" + locationName + "%");
+
+        ResultSet result = statement.executeQuery();
+        while(result.next()){
+            String name = result.getString("locationName");
+            String address = result.getString("locationAddress");
+
+            locations.add(new Location(name, address));
+        }
+        con.close();
+        return locations.get(0);
+    }
 }

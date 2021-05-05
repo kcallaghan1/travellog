@@ -42,6 +42,12 @@ CREATE TABLE categories(
 	categoryName TEXT NOT NULL UNIQUE
 );
 
+CREATE TABLE requestedLocations(
+	locationId INTEGER PRIMARY KEY,
+	locationName TEXT NOT NULL,
+	locationAddress TEXT NOT NULL UNIQUE
+);
+
 CREATE TABLE loggedLocations(
 	id INTEGER PRIMARY KEY,
 	travelLogId INTEGER NOT NULL,

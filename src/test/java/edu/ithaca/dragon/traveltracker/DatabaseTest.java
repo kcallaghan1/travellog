@@ -325,4 +325,39 @@ public class DatabaseTest {
 
         con.close();
     }
+
+
+    @Test
+    void addLocationRequestTest() throws SQLException {
+        Location loc1 = new Location("Walter White's House", "308 Negra Arroyo Lane, Albuquerque, NM");
+
+        db.addLocationRequest(loc1);
+        ArrayList<Location> requests = db.getRequestedLocations();
+        for(Location loc : requests){
+            System.out.println(loc.getName() + ", " + loc.getAddress());
+        }
+    }
+
+
+    @Test
+    void approveLocationRequestTest() throws SQLException {
+        ArrayList<Location> locations = db.getLocations();
+        for(Location loc : locations){
+            System.out.println(loc.getName() + ", " + loc.getAddress());
+        }
+
+        Location locToApprove = db.findRequestedLocationByName("Walter White's House");
+
+        db.addLocation(locToApprove);
+        db.removeLocationRequest(locToApprove);
+
+        locations = db.getLocations();
+        System.out.println();
+
+        for(Location loc : locations){
+            System.out.println(loc.getName() + ", " + loc.getAddress());
+        }
+
+        db.removeLocation(locToApprove.getName());
+    }
 }
