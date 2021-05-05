@@ -336,6 +336,7 @@ public class DatabaseTest {
         for(Location loc : requests){
             System.out.println(loc.getName() + ", " + loc.getAddress());
         }
+        assertEquals(1, requests.size());
     }
 
 
@@ -345,6 +346,7 @@ public class DatabaseTest {
         for(Location loc : locations){
             System.out.println(loc.getName() + ", " + loc.getAddress());
         }
+        assertEquals(4, locations.size());
 
         Location locToApprove = db.findRequestedLocationByName("Walter White's House");
 
@@ -358,6 +360,40 @@ public class DatabaseTest {
             System.out.println(loc.getName() + ", " + loc.getAddress());
         }
 
+        assertEquals(5, locations.size());
+
         db.removeLocation(locToApprove.getName());
     }
+
+
+    @Test
+    void addFavoriteLocationTest() throws SQLException {
+        ArrayList<Location> locations = db.getLocations();
+
+        Account testAcc = db.findAccountByUsername("cam");
+        Location locToFavorite = db.findLocationByName("Fancy Restaurant").get(0);
+        ArrayList<Location> favorites = db.getFavoriteLocations();
+
+        for(Location loc : favorites){
+            System.out.println(loc.getName() + ", " + loc.getAddress());
+        }
+
+        db.addFavoriteLocation(testAcc, locToFavorite);
+
+        for(Location loc : favorites){
+            System.out.println(loc.getName() + ", " + loc.getAddress());
+        }
+
+        assertEquals(favorites.size(), 1);
+        assertEquals("Fancy Restaurant", favorites.get(0).getName());
+    }
+
+    @Test
+    void removeFavoriteLocationTest() throws SQLException{
+
+        Location favoriteToRemove = db.findLocationByName("Fancy Restaurant").get(0);
+        db.removeFavoriteLocation(favoriteToRemove.getLocationId());
+        assertEquals(db.getFavoriteLocations().size(), 0);
+    }
+
 }
