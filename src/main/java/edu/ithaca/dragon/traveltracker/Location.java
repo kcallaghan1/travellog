@@ -48,6 +48,10 @@ public class Location {
         else throw new IllegalArgumentException("The address of this location has been left empty.");
     }
 
+    public void addCat(String s){
+        categories.add(s);
+    }
+
     public String getName(){
         return name;
     }

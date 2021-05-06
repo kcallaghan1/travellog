@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-    public static Database Database = new Database("jdbc:sqlite:Database/TravelTracker.db");
+    public static Database Database = new Database("jdbc:sqlite:traveltracker/Database/TravelTracker.db");
 
     public static Account login(Scanner sc){
         boolean loginSuccess = false;
@@ -138,7 +138,7 @@ public class UserInterface {
             else if(stringIn.equalsIgnoreCase("r")){
                 System.out.println("Select a log to remove:");
                 stringIn = sc.nextLine();
-                Database.removeTravelLog(Integer.parseInt(stringIn));
+                Database.removeTravelLog(logs.get(Integer.parseInt(stringIn)-1).getLogId());
             }
             else if(Integer.parseInt(stringIn) <= logs.size()){
                 openLog(logs.get(Integer.parseInt(stringIn) - 1), currentAccount, sc);
@@ -215,7 +215,7 @@ public class UserInterface {
 
 
     public static void openFavorites(Account currentAccount, Scanner sc){
-
+        Database.getFavoriteLocations();
     }
 
     public static void changePassword(Account currentAccount, Scanner sc){
@@ -250,8 +250,17 @@ public class UserInterface {
             System.out.println("6. Quit");
 
 
-            int userInput = Integer.parseInt(sc.nextLine());
+            int userInput = 0;
+
+            try{
+                userInput = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e){
+
+            }
             switch(userInput){
+                case 0:
+                    System.out.println("Undefined input, please enter a proper integer");
+                    break;
                 case 1:
                 try {
                     openTravelLogs(currentAccount, sc);
@@ -261,7 +270,6 @@ public class UserInterface {
                     break;
                 case 2:
                     openFavorites(currentAccount, sc);
-                    System.out.println("Favorite Locations are not yet available");
                     break;
                 case 3:
                     searchLocation(currentAccount, sc);
@@ -276,6 +284,72 @@ public class UserInterface {
                     open = false;
                     sc.close();
                     System.exit(0);
+            }
+        }
+    }
+
+    private static void searchAccounts(Account currentAccount, Scanner sc){
+        boolean open = true;
+        while(open){
+            System.out.println("Enter an account name, type 'e' to edit an account, type 'd' to dump all accounts, 'b' to go back, or 'q' to quit");
+            String stringIn = sc.nextLine();
+            if(stringIn.equalsIgnoreCase("b")){
+                open = false;
+                return;
+            }
+            else if(stringIn.equalsIgnoreCase("q")){
+                sc.close();
+                System.exit(0);
+            }
+            else if(stringIn.equalsIgnoreCase("d")){
+                Database.printAccounts();
+            }
+            else if(stringIn.equalsIgnoreCase("e")){
+                System.out.println("Please enter the exact username of the account you would like to edit.");
+                stringIn = sc.nextLine();
+                Account a = Database.findAccountByUsername(stringIn);
+                if(a == null){
+                    System.out.println("Username not found.");
+                }
+                else{
+                    System.out.println("Type 'a' to toggle permissions, 'u' to edit username, 'p' to change password, or 'e' to change email");
+                    stringIn = sc.nextLine();
+                    if(stringIn.equalsIgnoreCase("a")){
+                        a.togglePermissions();
+                        Database.updatePermissions(a);;
+                    }
+                    else if(stringIn.equalsIgnoreCase("u")){
+                        System.out.println("Please enter a new username.");
+                        String username = sc.nextLine();
+                        a.setUsername(username);
+                        Database.updateUsername(a);
+                    }
+                    else if(stringIn.equalsIgnoreCase("p")){
+                        System.out.println("Please enter a new password.");
+                        String password = sc.nextLine();
+                        a.setPassword(password);
+                        Database.updatePassword(a);;
+                    }
+                    else if(stringIn.equalsIgnoreCase("e")){
+                        System.out.println("Please enter a new email.");
+                        String email = sc.nextLine();
+                        a.setEmail(email);
+                        Database.updateEmail(a);
+                    }
+                    else{
+                        System.out.println("Undefined command.");
+                    }
+                }
+            }
+            else{
+                ArrayList<Account> accountList = Database.getAccountsWith(stringIn);
+                for(int i = 0; i < accountList.size(); i++){
+                    System.out.println(accountList.get(i).getAccountId() +  "\t" +
+                        accountList.get(i).getEmail() + "\t" +
+                        accountList.get(i).getUsername() + "\t" +
+                        accountList.get(i).getPassword() + "\t" +
+                        accountList.get(i).getPermissions());
+                }
             }
         }
     }
@@ -298,7 +372,7 @@ public class UserInterface {
             }
         }
         else{
-            String locationName = sc.nextLine();
+            String locationName = stringIn;
             try {
                 ArrayList<Location> locations = Database.findLocationByName(locationName);
                 for(int i = 0; i < locations.size(); i++){
@@ -306,6 +380,112 @@ public class UserInterface {
                 }
             } catch (SQLException e) {
             }
+        }
+    }
+
+    public static void adminHome(Account currentAccount, Scanner sc){
+        boolean open = true;
+        while(open){
+            System.out.println("Welcome " + currentAccount.getUsername() + "!");
+            System.out.println("Please select an option: ");
+            System.out.println("1. View Location Add Requests");
+            System.out.println("2. Search for a location"); // TODO
+            System.out.println("3. Search for an account");
+            System.out.println("4. Add new Location");
+            System.out.println("5. Remove Location");
+            System.out.println("6. Change Password");
+            System.out.println("7. Logout");
+            System.out.println("8. Quit");
+
+            int userInput = 0;
+
+            try{
+                userInput = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e){
+
+            }
+            switch(userInput){
+                case 0:
+                    System.out.println("Undefined input, please enter a proper integer");
+                    break;
+                case 1:
+                    viewLocationAddRequests(currentAccount,sc);
+                    break;
+                case 2:
+                    searchLocation(currentAccount, sc);
+                    break;
+                case 3:
+                    searchAccounts(currentAccount, sc);
+                    break;
+                case 4:
+                    addNewLocation(currentAccount, sc);
+                    break;
+                case 5:
+                    removeLocation(currentAccount, sc);
+                    break;
+                case 6:
+                    changePassword(currentAccount, sc);
+                    break;
+                case 7:
+                    open = false;
+                    return;
+                case 8:
+                    open = false;
+                    sc.close();
+                    System.exit(0);
+            }
+        }
+    }
+
+    private static void viewLocationAddRequests(Account currentAccount, Scanner sc) {
+        try{
+            ArrayList<Location> l = Database.getRequestedLocations();
+            for(int i = 0; i<l.size(); i++){
+                System.out.println(l.get(i).getName() + "\t" + l.get(i).getAddress());
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void removeLocation(Account currentAccount, Scanner sc) {
+        System.out.println("Please enter the name of the location you would like to remove: ");
+        String userString = sc.nextLine();
+        Database.removeLocation(userString);
+    }
+
+
+    private static void addNewLocation(Account currentAccount, Scanner sc) {
+        boolean open = true;
+        while(open){
+            System.out.println("Please enter a name for your location: ");
+            String name = sc.nextLine();
+            System.out.println("Please enter an address for your location: ");
+            String address = sc.nextLine();
+            Location l = new Location(name, address);
+            Database.addLocation(l);
+            ArrayList<String> cat = Database.getCategories();
+            for(int i = 0; i < cat.size(); i++){
+                System.out.println(i + cat.get(i));
+            }
+            System.out.println("Enter as many categories from the list as you'd like, type 'q' to stop");
+            String userInput = "";
+            while(!userInput.equalsIgnoreCase("q")){
+                userInput = sc.nextLine();
+                if(userInput.equalsIgnoreCase("q")){
+                    break;
+                }
+                try{
+                    l.addCat(cat.get(Integer.parseInt(userInput)));
+                }
+                catch(Exception e){
+                    System.out.println("Invalid arguement.");
+                }
+            }
+            System.out.println("Successfully added: " + name);
+            open = false;
         }
     }
 
@@ -345,8 +525,16 @@ public class UserInterface {
                     System.out.println("Please enter a valid input!");
                 }
             }
-
-            home(currentAccount, sc);
+            if(currentAccount.getPermissions().equalsIgnoreCase("user")){
+                home(currentAccount, sc);
+            }
+            else if(currentAccount.getPermissions().equalsIgnoreCase("admin")){
+                adminHome(currentAccount,sc);
+            }
+            else{
+                System.out.println(currentAccount.getPermissions());
+                System.out.println("Fatal Error: Undefined Permissions");
+            }
             loggedIn = false;
         }
     }

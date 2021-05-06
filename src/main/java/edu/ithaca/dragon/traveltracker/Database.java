@@ -63,6 +63,51 @@ public class Database {
         }
     }
 
+    public void updatePermissions(Account acc){
+        String sql = "UPDATE accounts SET permissions = ?" + " WHERE accountId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, acc.getPermissions());
+            pstmt.setInt(2, acc.getAccountId());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateEmail(Account acc){
+        String sql = "UPDATE accounts SET email = ?" + " WHERE accountId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, acc.getEmail());
+            pstmt.setInt(2, acc.getAccountId());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateUsername(Account acc){
+        String sql = "UPDATE accounts SET username = ?" + " WHERE accountId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, acc.getUsername());
+            pstmt.setInt(2, acc.getAccountId());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     public  void removeAccountByUsername(String username){
         String sql = "DELETE FROM accounts WHERE username = ?";
@@ -125,6 +170,30 @@ public class Database {
         return accounts;
     }
 
+    public ArrayList<Account> getAccountsWith(String str){
+        String sql = "Select * FROM accounts WHERE username LIKE '%" + str + "%';";
+        ArrayList<Account> accounts = new ArrayList<Account>();
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+
+                String email = rs.getString("email");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int accountId = rs.getInt("accountId");
+                String permissions = rs.getString("permissions");
+
+                accounts.add(new Account(username, email, password, accountId, permissions));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return accounts;
+    }
 
     public  Account findAccountByUsername(String username) {
         String sql = "SELECT * FROM accounts WHERE username = ?";
@@ -137,7 +206,8 @@ public class Database {
             String email = rs.getString("email");
             String password = rs.getString("password");
             int accountId = rs.getInt("accountId");
-            return new Account(username, email, password, accountId);
+            String permissions = rs.getString("permissions");
+            return new Account(username, email, password, accountId, permissions);
         }
 
         catch(SQLException e){
@@ -198,26 +268,24 @@ public class Database {
     }
 
     public  ArrayList<Location> findLocationByName(String locationName) throws SQLException {
-        ArrayList<Location> filtered_locations = new ArrayList<Location>();
-        Connection con = connect();
+        String sql = "Select * FROM locations WHERE locationName LIKE '%" + locationName + "%';";
+        ArrayList<Location> locations = new ArrayList<Location>();
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
 
-
-        String sql = "SELECT * FROM locations WHERE locationName LIKE ?";
-
-        PreparedStatement statement = con.prepareStatement(sql);
-        statement.setString(1, "%" + locationName + "%");
-
-        ResultSet result = statement.executeQuery();
-        while(result.next()){
-            String name = result.getString("locationName");
-            String location = result.getString("locationAddress");
-            int locationId = result.getInt("locationId");
-            ArrayList<String> categories = getCategoriesByLocation(locationId);
-
-            filtered_locations.add(new Location(name, location, categories, locationId));
+            // loop through the result set
+            while (rs.next()) {
+                String name = rs.getString("locationName");
+                String address = rs.getString("locationAddress");
+                
+                locations.add(new Location(name, address));
+            }
         }
-        con.close();
-        return filtered_locations;
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return locations;
     }
 
     public  ArrayList<Location> findLocationByCategory(String category) throws SQLException {
@@ -373,12 +441,12 @@ public class Database {
     }
 
 
-    public  void removeTravelLog(int travelLogId){
-        String sql = "DELETE FROM travelLogs where travelLogId = ?";
+    public  void removeTravelLog(int logId){
+        String sql = "DELETE FROM travelLogs where logId = ?";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1,travelLogId);
+            pstmt.setInt(1,logId);
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -388,27 +456,28 @@ public class Database {
     }
 
 
-    public  void addLocationToTravelLog(int locationId, int travelLogId){
+    public  void addLocationToTravelLog(int locationId, int logId){
         String sql = "insert into loggedLocations(travelLogId, locationId) values(?,?)";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, travelLogId);
+            pstmt.setInt(1, logId);
             pstmt.setInt(2,locationId);
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
 
-    public  void removeLocationFromTravelLog(int locationId, int travelLogId){
+    public  void removeLocationFromTravelLog(int locationId, int logId){
         String sql = "DELETE FROM loggedLocations where (travelLogId = ? and locationId = ?)";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, travelLogId);
+            pstmt.setInt(1, logId);
             pstmt.setInt(2,locationId);
             pstmt.executeUpdate();
 
@@ -421,7 +490,7 @@ public class Database {
     public  ArrayList<TravelLog> getTravelLogsByAccount(Account acc) throws SQLException {
         ArrayList<TravelLog> logs = new ArrayList<TravelLog>();
 
-        String sql = "Select logName, logDescription, travelLogId from travelLogs where accountId = ?";
+        String sql = "Select logName, logDescription, logId from travelLogs where accountId = ?";
         try (Connection conn = connect();
              PreparedStatement statement = conn.prepareStatement(sql)){
 
@@ -434,9 +503,9 @@ public class Database {
 
                 String logName = rs.getString("logName");
                 String logDescription = rs.getString("logDescription");
-                int travelLogId = rs.getInt("travelLogId");
+                int logId = rs.getInt("logId");
 
-                logs.add(new TravelLog(logName, logDescription, travelLogId));
+                logs.add(new TravelLog(logName, logDescription, logId));
             }
         }
         catch (SQLException e) {

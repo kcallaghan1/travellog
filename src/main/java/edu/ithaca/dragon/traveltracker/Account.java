@@ -27,6 +27,21 @@ public class Account{
         }
     }
 
+    public Account(String username, String email, String password, int accountId, String permissions){
+        if(isEmailValid(email) || username.length()<6){
+            this.username=username;
+            this.email = email;
+            this.password = password;
+            this.accountId = accountId;
+            this.permissions = permissions;
+            tLogs = new ArrayList<TravelLog>();
+            fav = new ArrayList<Location>();
+        }
+        else{
+            throw new IllegalArgumentException("Invalid email or username");
+        }
+    }
+
     public Account(String username, String email, String password, int accountId){
         if(isEmailValid(email) || username.length()<6){
             this.username=username;
@@ -150,6 +165,27 @@ public class Account{
         }
         else{
             return false;
+        }
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    void togglePermissions(){
+        if(permissions.equalsIgnoreCase("user")){
+            permissions = "admin";
+        }
+        else{
+            permissions = "user";
         }
     }
 
