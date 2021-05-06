@@ -245,9 +245,10 @@ public class UserInterface {
             System.out.println("1. View Travel Logs");
             System.out.println("2. View Favorite Locations"); // TODO
             System.out.println("3. Search for a Location"); // TODO
-            System.out.println("4. Change password");
-            System.out.println("5. Logout");
-            System.out.println("6. Quit");
+            System.out.println("4. Request Add Location");
+            System.out.println("5. Change password");
+            System.out.println("6. Logout");
+            System.out.println("7. Quit");
 
 
             int userInput = 0;
@@ -275,18 +276,31 @@ public class UserInterface {
                     searchLocation(currentAccount, sc);
                     break;
                 case 4:
-                    changePassword(currentAccount, sc);
+                    requestAddLocation(currentAccount, sc);
                     break;
                 case 5:
+                    changePassword(currentAccount, sc);
+                    break;
+                case 6:
                     open = false;
                     return;
-                case 6:
+                case 7:
                     open = false;
                     sc.close();
                     System.exit(0);
             }
         }
     }
+
+    private static void requestAddLocation(Account currentAccount, Scanner sc) {
+        System.out.println("What location would you like to see added?");
+        String name = sc.nextLine();
+        System.out.println("What is its address?");
+        String address = sc.nextLine();
+        Database.addLocationRequest(new Location(name, address));
+        System.out.println("Location request for " + name + "successfully added");
+    }
+
 
     private static void searchAccounts(Account currentAccount, Scanner sc){
         boolean open = true;
