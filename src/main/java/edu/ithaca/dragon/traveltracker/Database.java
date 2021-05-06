@@ -585,4 +585,24 @@ public class Database {
         }
         return favoriteLocations;
     }
+
+    public ArrayList<Pictures> getPictures(){
+        String sql = "Select * from pictures";
+        ArrayList<Pictures> pics = new ArrayList<Pictures>();
+
+        try (Connection conn = connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+
+            // loop through the result set
+            while (rs.next()) {
+
+                pics.add(new Pictures());
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return pics;
+    }
 }

@@ -9,7 +9,11 @@ import java.util.ArrayList;
 
 public class Pictures {
 
-    static ArrayList<String> pics = new ArrayList<>();
+    static ArrayList<String> pics;
+
+    public Pictures(){
+        pics = new ArrayList<String>();
+    }
 
     public static void addPicture(String name, String path) throws IOException{
         copyImage(name, path);

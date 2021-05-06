@@ -396,4 +396,9 @@ public class DatabaseTest {
         assertEquals(db.getFavoriteLocations().size(), 0);
     }
 
+    @Test
+    void addPictureTest(){
+        ArrayList<Picture> pics = ();
+    }
+
 }
