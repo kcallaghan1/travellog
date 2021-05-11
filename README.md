@@ -1,6 +1,8 @@
 # traveltracker
 Travel Tracker for CS 345
 
+Link to all Diagrams [here](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing)
+
 This is a readme. As the title suggests, you should read me.
 ## DisplayImage.java
 * Credit for the code: [Jan Bodnar](https://github.com/janbodnar)
@@ -20,8 +22,6 @@ When querying the database you should use executeQuery() paired with a ResultSet
 because the ResultSet object can store the information that you queried, allowing you to operate on the data. This can then be put back into the database 
 with an executeUpdate(). The executeUpdate() doesn't need an object because you don't store anything in the program from that command, it's a way to push
 your changes to the database.
-
-Link to all Diagrams [here](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing)
 
 ## Sprint 1
 * Goal: User should be able to search/find locations and add/remove them from their travel log.
