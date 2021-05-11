@@ -23,7 +23,7 @@ your changes to the database.
 
 ## Sprint 1
 * Goal: User should be able to search/find locations and add/remove them from their travel log.
-    - [Class Diagram](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing) (click on 'Sprint 1 - Class Diagram' tab on the bottom)
+    - [Class Diagram](https://viewer.diagrams.net/?page-id=ZwHcOdonUymgxgGQwOtW&highlight=0000ff&edit=_blank&layers=1&nav=1&page-id=ZwHcOdonUymgxgGQwOtW#G11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN) (click on 'Sprint 1 - Class Diagram' tab on the bottom)
     - [Review Agenda](https://docs.google.com/document/d/1bs-s56xOaBFBxPl2S9CGJ1s0Qm7sTqiuuwDVgVT6zbw/edit?usp=sharing)
     - [Retrospective](https://docs.google.com/document/d/1gwihNZGYR9QlfwOC5aEMi2xGmAw6mYUqKJyXcgVB_3s/edit?usp=sharing)
 
