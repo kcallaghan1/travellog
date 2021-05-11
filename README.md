@@ -1,6 +1,14 @@
 # traveltracker
 Travel Tracker for CS 345
 
+# QuickStartGuide
+
+-Clone repository
+-Change database path in UserInterface such that it is the correct path to TravelTracker.db (This has been shown to cause issues across devices)
+-Run main in UserInterface
+
+# Diagrams
+
 Link to all Diagrams [here](https://drive.google.com/file/d/11yCjMl8PNKK4R_5L2aCVjqPbpJA9rFeN/view?usp=sharing)
 
 This is a readme. As the title suggests, you should read me.
